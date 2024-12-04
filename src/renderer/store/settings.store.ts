@@ -597,15 +597,11 @@ const initialState: SettingsState = {
                 },
             ],
             followCurrentSong: true,
-            rowHeight: 60,
+            rowHeight: 52,
         },
         sideQueue: {
             autoFit: true,
             columns: [
-                {
-                    column: TableColumn.ROW_INDEX,
-                    width: 50,
-                },
                 {
                     column: TableColumn.TITLE_COMBINED,
                     width: 500,
@@ -616,7 +612,7 @@ const initialState: SettingsState = {
                 },
             ],
             followCurrentSong: true,
-            rowHeight: 60,
+            rowHeight: 52,
         },
         songs: {
             autoFit: true,

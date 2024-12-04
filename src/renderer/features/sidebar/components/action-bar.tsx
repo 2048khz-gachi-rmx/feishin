@@ -11,7 +11,8 @@ import { useCommandPalette } from '/@/renderer/store';
 const ActionsContainer = styled.div`
     display: flex;
     align-items: center;
-    height: 70px;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
     -webkit-app-region: drag;
 
     input {

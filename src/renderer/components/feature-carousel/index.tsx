@@ -18,8 +18,8 @@ import { usePlayButtonBehavior } from '/@/renderer/store';
 
 const Carousel = styled(motion.div)`
     position: relative;
-    height: 35vh;
-    min-height: 250px;
+    display: flex;
+    max-height: 32vh;
     padding: 2rem;
     overflow: hidden;
     background: linear-gradient(180deg, var(--main-bg), rgb(25 26 28 / 60%));
@@ -192,12 +192,14 @@ export const FeatureCarousel = ({ data }: FeatureCarouselProps) => {
                                                 key={`carousel-artist-${artist.id}`}
                                                 order={2}
                                                 weight={600}
+                                                overflow="hidden"
                                             >
                                                 {artist.name}
                                             </TextTitle>
                                         ))}
                                     </TitleWrapper>
-                                    <Group>
+                                    <Group
+                                        noWrap>
                                         {currentItem?.genres?.slice(0, 1).map((genre) => (
                                             <Badge
                                                 key={`carousel-genre-${genre.id}`}
@@ -213,7 +215,7 @@ export const FeatureCarousel = ({ data }: FeatureCarouselProps) => {
                                             })}
                                         </Badge>
                                     </Group>
-                                    <Group position="apart">
+                                    <Group position="apart" noWrap>
                                         <Button
                                             size="lg"
                                             style={{ borderRadius: '5rem' }}
@@ -241,7 +243,7 @@ export const FeatureCarousel = ({ data }: FeatureCarouselProps) => {
                                                 { postProcess: 'titleCase' },
                                             )}
                                         </Button>
-                                        <Group spacing="sm">
+                                        <Group spacing="sm" noWrap>
                                             <Button
                                                 radius="lg"
                                                 size="sm"

@@ -37,5 +37,6 @@
 }
 
 .ag-header-cell-resize {
-    background-color: transparent;
+    background-color: var(--table-border-color);
+    opacity: 50%;
 }

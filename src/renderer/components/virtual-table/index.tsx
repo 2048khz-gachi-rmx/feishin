@@ -65,7 +65,7 @@ const TableWrapper = styled.div`
 
 const DummyHeader = styled.div<{ height?: number }>`
     position: absolute;
-    height: ${({ height }) => height || 36}px;
+    height: ${({ height }) => height || 30}px;
 `;
 
 const tableColumns: { [key: string]: ColDef } = {
@@ -615,7 +615,7 @@ export const VirtualTable = forwardRef(
                     cacheOverflowSize={1}
                     defaultColDef={defaultColumnDefs}
                     enableCellChangeFlash={false}
-                    headerHeight={36}
+                    headerHeight={30}
                     rowBuffer={30}
                     rowSelection="multiple"
                     {...rest}

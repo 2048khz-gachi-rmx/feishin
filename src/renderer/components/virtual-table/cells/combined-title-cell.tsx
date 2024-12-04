@@ -56,7 +56,13 @@ const MetadataWrapper = styled.div`
 
 const StyledImage = styled(SimpleImg)`
     img {
+        padding: max(4px, 6%);
+        border-radius: 25%;
         object-fit: var(--image-fit);
+    }
+
+    div {
+        position: relative !important
     }
 `;
 
@@ -99,19 +105,18 @@ export const CombinedTitleCell = ({
                 {value.imageUrl ? (
                     <StyledImage
                         alt="cover"
-                        height={(node.rowHeight || 40) - 10}
+                        height={(node.rowHeight || 40)}
                         placeholder={value.imagePlaceholderUrl || 'var(--placeholder-bg)'}
                         src={value.imageUrl}
-                        style={{}}
-                        width={(node.rowHeight || 40) - 10}
+                        width={(node.rowHeight || 40)}
                     />
                 ) : (
                     <Center
                         sx={{
                             background: 'var(--placeholder-bg)',
                             borderRadius: 'var(--card-default-radius)',
-                            height: `${(node.rowHeight || 40) - 10}px`,
-                            width: `${(node.rowHeight || 40) - 10}px`,
+                            height: `${(node.rowHeight || 40)}px`,
+                            width: `${(node.rowHeight || 40)}px`,
                         }}
                     >
                         <RiAlbumFill
@@ -120,12 +125,6 @@ export const CombinedTitleCell = ({
                         />
                     </Center>
                 )}
-                <ListCoverControls
-                    context={context}
-                    itemData={value}
-                    itemType={context.itemType}
-                    uniqueId={data?.uniqueId}
-                />
             </ImageWrapper>
             <MetadataWrapper>
                 <Text

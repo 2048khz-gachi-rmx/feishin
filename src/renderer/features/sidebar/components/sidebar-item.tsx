@@ -6,6 +6,7 @@ import styled, { css } from 'styled-components';
 
 interface ListItemProps extends FlexProps {
     children: ReactNode;
+    active?: boolean;
     disabled?: boolean;
     to?: string;
 }
@@ -26,22 +27,23 @@ const ItemStyle = css`
     padding: 0.5rem 1rem;
     color: var(--sidebar-fg);
     border: 1px transparent solid;
-    transition: color 0.2s ease-in-out;
+    transition: color 0.05s ease-in-out;
 
     &:hover {
         color: var(--sidebar-fg-hover);
     }
 `;
 
-const _ItemLink = styled(StyledItem)<LinkProps & { disabled?: boolean }>`
+const _ItemLink = styled(StyledItem)<LinkProps & { active?: boolean, disabled?: boolean }>`
+    ${(props) => props.active && 'margin: 16px'}
+
+    ${ItemStyle};
     pointer-events: ${(props) => props.disabled && 'none'};
     opacity: ${(props) => props.disabled && 0.6};
 
     &:focus-visible {
         border: 1px solid var(--primary-color);
     }
-
-    ${ItemStyle}
 `;
 
 const ItemLink = createPolymorphicComponent<'a', ListItemProps>(_ItemLink);

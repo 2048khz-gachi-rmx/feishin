@@ -246,7 +246,7 @@ const HomeRoute = () => {
             >
                 <Stack
                     mb="5rem"
-                    pt={windowBarStyle === Platform.WEB ? '5rem' : '3rem'}
+                    pt={windowBarStyle === Platform.WEB ? '3rem' : '1rem'}
                     px="2rem"
                     spacing="lg"
                 >

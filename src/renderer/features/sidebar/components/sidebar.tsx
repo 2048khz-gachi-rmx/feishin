@@ -156,6 +156,7 @@ export const Sidebar = () => {
                         {sidebarItemsWithRoute.map((item) => {
                             return (
                                 <SidebarItem
+                                    active={location.pathname === item.route}
                                     key={`sidebar-${item.route}`}
                                     to={item.route}
                                 >
