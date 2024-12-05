@@ -17,7 +17,7 @@ jobs:
             - name: Install Node and NPM
               uses: actions/setup-node@v1
               with:
-                  node-version: 18
+                  node-version: 20
                   cache: npm
 
             - name: Install dependencies
@@ -27,7 +27,7 @@ jobs:
             - name: Publish releases
               env:
                   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-              uses: nick-invision/retry@v2.8.2
+              uses: nick-invision/retry@v3.0.0
               with:
                   timeout_minutes: 30
                   max_attempts: 3

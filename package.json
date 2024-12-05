@@ -144,13 +144,13 @@
         ],
         "publish": {
             "provider": "github",
-            "owner": "jeffvli",
+            "owner": "2048khz-gachi-rmx",
             "repo": "feishin"
         }
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/jeffvli/feishin.git"
+        "url": "git+https://github.com/2048khz-gachi-rmx/feishin.git"
     },
     "author": {
         "name": "jeffvli",
