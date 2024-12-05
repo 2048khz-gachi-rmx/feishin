@@ -20,7 +20,6 @@ const CellContainer = styled(motion.div)<{ height: number }>`
     grid-template-rows: 1fr;
     grid-template-columns: ${(props) => props.height}px minmax(0, 1fr);
     grid-auto-columns: 1fr;
-    gap: 0.5rem;
     width: 100%;
     max-width: 100%;
     height: 100%;
@@ -38,12 +37,12 @@ const CellContainer = styled(motion.div)<{ height: number }>`
 `;
 
 const ImageWrapper = styled.div`
-    position: relative;
+    position: absolute;
     display: flex;
     grid-area: image;
-    align-items: center;
-    justify-content: center;
+    width: 100%;
     height: 100%;
+    padding: 4px 0;
 `;
 
 const MetadataWrapper = styled.div`
@@ -56,13 +55,15 @@ const MetadataWrapper = styled.div`
 
 const StyledImage = styled(SimpleImg)`
     img {
-        padding: max(4px, 6%);
+        height: 100%;
+        aspect-ratio: 1 / 1;
         border-radius: 25%;
         object-fit: var(--image-fit);
     }
 
+    /* placeholder image */
     div {
-        position: relative !important
+        border-radius: 25%;
     }
 `;
 
@@ -105,10 +106,9 @@ export const CombinedTitleCell = ({
                 {value.imageUrl ? (
                     <StyledImage
                         alt="cover"
-                        height={(node.rowHeight || 40)}
                         placeholder={value.imagePlaceholderUrl || 'var(--placeholder-bg)'}
                         src={value.imageUrl}
-                        width={(node.rowHeight || 40)}
+                        height={'100%'}
                     />
                 ) : (
                     <Center

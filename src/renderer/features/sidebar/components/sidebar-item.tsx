@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import clsx from 'clsx';
 import { createPolymorphicComponent, Flex, FlexProps } from '@mantine/core';
 import type { LinkProps } from 'react-router-dom';
 import { Link } from 'react-router-dom';
@@ -35,8 +36,6 @@ const ItemStyle = css`
 `;
 
 const _ItemLink = styled(StyledItem)<LinkProps & { active?: boolean, disabled?: boolean }>`
-    ${(props) => props.active && 'margin: 16px'}
-
     ${ItemStyle};
     pointer-events: ${(props) => props.disabled && 'none'};
     opacity: ${(props) => props.disabled && 0.6};
@@ -54,6 +53,7 @@ export const SidebarItem = ({ to, children, ...props }: ListItemProps) => {
             <ItemLink
                 component={Link}
                 to={to}
+                className={clsx('itemLink', props.active ? 'active' : '')}
                 {...props}
             >
                 {children}

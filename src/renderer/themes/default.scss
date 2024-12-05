@@ -97,7 +97,7 @@
     --placeholder-fg: rgba(126, 126, 126);
     --card-default-bg: rgb(32, 32, 32);
     --card-default-bg-hover: rgb(44, 44, 44);
-    --card-default-radius: 5px;
+    --card-default-radius: 25%;
     --card-poster-bg: transparent;
     --card-poster-bg-hover: transparent;
     --card-poster-radius: 3px;
@@ -132,7 +132,7 @@
         --ag-selected-row-background-color: var(--table-row-selected-bg);
         --ag-range-selection-border-color: var(--table-border-color);
         --ag-range-selection-border-style: dashed;
-        --ag-cell-horizontal-padding: 0.25rem;
+        --ag-cell-horizontal-padding: 0.5rem;
     }
 
     .ag-header {
@@ -231,4 +231,28 @@
     .current-song > .row-index.playing .current-song-index {
         display: none;
     }
+
+    .itemLink {
+        --gcto: 0%;
+
+        transition: --gcto 0.1s ease-out,
+                    background-color 0.2s ease-out;
+
+        background: padding-box linear-gradient(165deg,
+            color-mix(in srgb, var(--primary-color) 60%, transparent),
+            transparent var(--gcto));
+
+        background-color: transparent;
+
+        &.active {
+            --gcto: 80%;
+            background-color: color-mix(in srgb, var(--sidebar-fg) 5%, transparent);
+        }
+    }
+}
+
+@property --gcto {
+    syntax: '<percentage>';
+    initial-value: 0%;
+    inherits: false;
 }
