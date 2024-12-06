@@ -233,26 +233,26 @@
     }
 
     .itemLink {
-        --gcto: 0%;
+        --gcto: 0;
 
         transition: --gcto 0.1s ease-out,
                     background-color 0.2s ease-out;
 
         background: padding-box linear-gradient(165deg,
             color-mix(in srgb, var(--primary-color) 60%, transparent),
-            transparent var(--gcto));
+            transparent calc(var(--gcto) * 100%));
 
         background-color: transparent;
 
         &.active {
-            --gcto: 80%;
+            --gcto: 0.8;
             background-color: color-mix(in srgb, var(--sidebar-fg) 5%, transparent);
         }
     }
 }
 
 @property --gcto {
-    syntax: '<percentage>';
-    initial-value: 0%;
+    syntax: '<number>';
+    initial-value: 0;
     inherits: false;
 }
