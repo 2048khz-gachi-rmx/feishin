@@ -16,6 +16,7 @@ import { ListCoverControls } from '/@/renderer/components/virtual-table/cells/co
 
 const CellContainer = styled(motion.div)<{ height: number }>`
     display: grid;
+    container-type: size;
     grid-template-areas: 'image info';
     grid-template-rows: 1fr;
     grid-template-columns: ${(props) => props.height}px minmax(0, 1fr);
@@ -58,13 +59,13 @@ const StyledImage = styled(SimpleImg)`
     img {
         height: 100%;
         aspect-ratio: 1 / 1;
-        border-radius: 25%;
+        border-radius: 15%;
         object-fit: var(--image-fit);
     }
 
     /* placeholder image */
     div {
-        border-radius: 25%;
+        border-radius: 15%;
     }
 `;
 
@@ -129,7 +130,7 @@ export const CombinedTitleCell = ({
             </ImageWrapper>
             <MetadataWrapper>
                 <Text
-                    className="current-song-child"
+                    className="current-song-child song-name"
                     overflow="hidden"
                     size="md"
                 >
@@ -148,6 +149,7 @@ export const CombinedTitleCell = ({
                                     <Text
                                         $link
                                         $secondary
+                                        className="song-artist"
                                         component={Link}
                                         overflow="hidden"
                                         size="md"
@@ -161,6 +163,7 @@ export const CombinedTitleCell = ({
                                 ) : (
                                     <Text
                                         $secondary
+                                        className="song-artist"
                                         overflow="hidden"
                                         size="md"
                                         sx={{ width: 'fit-content' }}

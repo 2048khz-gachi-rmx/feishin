@@ -256,3 +256,15 @@
     initial-value: 0;
     inherits: false;
 }
+
+@container (height < 52px) {
+    .song-artist, .song-name {
+        line-height: 1.125;
+    }
+}
+
+@container (height < 41px) {
+    .song-artist {
+        display: none;
+    }
+}
