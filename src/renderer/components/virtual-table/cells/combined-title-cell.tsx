@@ -40,9 +40,10 @@ const ImageWrapper = styled.div`
     position: absolute;
     display: flex;
     grid-area: image;
-    width: 100%;
     height: 100%;
-    padding: 4px 0;
+    aspect-ratio: 1 / 1;
+    padding: 4px;
+    margin-left: -4px;
 `;
 
 const MetadataWrapper = styled.div`
@@ -82,9 +83,9 @@ export const CombinedTitleCell = ({
     if (value === undefined) {
         return (
             <CellContainer height={node.rowHeight || 40}>
-                <Skeleton>
-                    <ImageWrapper />
-                </Skeleton>
+                <ImageWrapper>
+                    <Skeleton/>
+                </ImageWrapper>
                 <MetadataWrapper>
                     <Skeleton
                         height="1rem"
