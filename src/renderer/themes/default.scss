@@ -176,6 +176,16 @@
         display: block;
     }
 
+    .ag-row:after {
+        position: absolute;
+        content: ''; // wtf
+        top: auto;
+        bottom: 0px;
+        width: calc(100% - 24px);
+        left: 12px;
+        border-top: 1px solid rgba(30, 30, 30, 50);
+    }
+
     .ag-row-hover {
         .ag-cell-transparent {
             opacity: 1;
@@ -199,6 +209,11 @@
         border-top: none !important;
         border-left: none !important;
         --ag-cell-horizontal-border: var(--table-border-color) dashed
+    }
+
+    .ag-cell:last-child {
+        border: none !important;
+        --ag-cell-horizontal-border: none
     }
 
     .current-song {
