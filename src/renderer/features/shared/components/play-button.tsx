@@ -36,8 +36,8 @@ export const PlayButton = ({ ...props }: any) => {
     return (
         <MotionButton
             {...props}
-            h="45px"
-            w="45px"
+            h="32px"
+            w="32px"
         >
             <RiPlayFill size={20} />
         </MotionButton>

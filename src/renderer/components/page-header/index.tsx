@@ -13,7 +13,7 @@ const Container = styled(motion(Flex))<{
     position: ${(props) => props.$position || 'relative'};
     z-index: 200;
     width: 100%;
-    height: ${(props) => props.$height || '65px'};
+    height: ${(props) => props.$height || '48px'};
     background: var(--titlebar-bg);
 `;
 

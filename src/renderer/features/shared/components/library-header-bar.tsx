@@ -45,19 +45,15 @@ interface PlayButtonProps {
 const PlayButton = ({ onClick }: PlayButtonProps) => {
     return (
         <Box>
-            <PlayBtn
-                h="45px"
-                w="45px"
-                onClick={onClick}
-            />
+            <PlayBtn onClick={onClick} />
         </Box>
     );
 };
 
 const Badge = styled(Paper)`
-    padding: 0.3rem 1rem;
+    padding: 0.25rem 0.5rem;
     font-weight: 600;
-    border-radius: 0.3rem;
+    border-radius: 0.25rem;
 `;
 
 interface HeaderBadgeProps extends PaperProps {
