@@ -254,6 +254,7 @@ export const PlayQueue = forwardRef(({ type }: QueueProps, ref: Ref<any>) => {
                     rowDragMultiRow
                     autoFitColumns={tableConfig.autoFit}
                     columnDefs={columnDefs}
+                    className='play-queue-table'
                     context={{
                         currentSong,
                         handleDoubleClick,

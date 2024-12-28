@@ -112,6 +112,8 @@
     --table-header-fg: rgb(179, 179, 179);
     --table-border: none;
     --table-border-color: hsla(0deg, 0%, 100%, 10%);
+    --table-cell-separator-color: hsla(0deg, 0%, 100%, 5%);
+    --table-row-separator-color: hsla(0deg, 0%, 100%, 5%);
     --table-bg: var(--main-bg);
     --table-alt-bg: var(--main-bg);
     --table-fg: rgb(179, 179, 179);
@@ -176,14 +178,17 @@
         display: block;
     }
 
-    .ag-row:after {
+    // while i'd like to not draw the separator on the last row, the way aggrid works is
+    // the DOM elements are out of order but are ordered visually via `translateY`
+    // so the DOM selectors (:last-child, adjacent, etc.) won't work correctly
+    .ag-row:not(.ag-row-selected):after {
         position: absolute;
         content: ''; // wtf
         top: auto;
         bottom: 0px;
-        width: calc(100% - 24px);
-        left: 12px;
-        border-top: 1px solid rgba(30, 30, 30, 50);
+        width: calc(100% - 8px);
+        left: 4px;
+        border-top: 1px solid var(--table-row-separator-color);
     }
 
     .ag-row-hover {
@@ -197,23 +202,11 @@
         }
     }
 
-    .ag-cell-focus {
+    .ag-cell:not(:last-child) {
         border-bottom: none !important;
         border-top: none !important;
         border-left: none !important;
-        --ag-cell-horizontal-border: var(--table-border-color) dashed
-    }
-
-    .ag-cell {
-        border-bottom: none !important;
-        border-top: none !important;
-        border-left: none !important;
-        --ag-cell-horizontal-border: var(--table-border-color) dashed
-    }
-
-    .ag-cell:last-child {
-        border: none !important;
-        --ag-cell-horizontal-border: none
+        --ag-cell-horizontal-border: var(--table-cell-separator-color) dashed
     }
 
     .current-song {

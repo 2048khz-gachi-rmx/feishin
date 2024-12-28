@@ -56,6 +56,7 @@ export const SongListTableView = ({ tableRef, itemCount }: SongListTableViewProp
                 key={`table-${tableProps.rowHeight}-${server?.id}`}
                 ref={tableRef}
                 {...tableProps}
+                className='songlist-table'
                 shouldUpdateSong
                 context={{
                     ...tableProps.context,
