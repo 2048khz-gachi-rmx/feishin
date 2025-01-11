@@ -1,5 +1,14 @@
 <img src="assets/icons/icon.png" alt="logo" title="feishin" align="right" height="60px" />
 
+# my edits to feishin
+originally i intended to fix the more obvious performance issues (try opening the Home page or resizing the queue), but the whole thing is shit from top to bottom (CSS in JS? forced reflows out the ass? are we generating CSS at runtime or something?)  
+i gave up, chalking all of it to react and the libraries' terrible performance, and instead settled on tweaking some visual stuff: separators, sizes, layouts, so on.
+you can still find the executables in [releases](https://github.com/2048khz-gachi-rmx/feishin/releases)
+![image](https://github.com/user-attachments/assets/294ccaf1-d17f-4f07-a612-033389e1af3b)
+
+---
+<img src="assets/icons/icon.png" alt="logo" title="feishin" align="right" height="60px" />
+
 # Feishin
 
   <p align="center">
@@ -7,33 +16,11 @@
       <img src="https://img.shields.io/github/license/jeffvli/feishin?style=flat-square&color=brightgreen"
       alt="License">
     </a>
-      <a href="https://github.com/jeffvli/feishin/releases">
-      <img src="https://img.shields.io/github/v/release/jeffvli/feishin?style=flat-square&color=blue"
-      alt="Release">
-    </a>
-    <a href="https://github.com/jeffvli/feishin/releases">
-      <img src="https://img.shields.io/github/downloads/jeffvli/feishin/total?style=flat-square&color=orange"
-      alt="Downloads">
+      <a href="https://github.com/2048khz-gachi-rmx/feishin/releases">
+          Releases
+      </a>
     </a>
   </p>
-  <p align="center">
-    <a href="https://discord.gg/FVKpcMDy5f">
-      <img src="https://img.shields.io/discord/922656312888811530?color=black&label=discord&logo=discord&logoColor=white"
-      alt="Discord">
-    </a>
-    <a href="https://matrix.to/#/#sonixd:matrix.org">
-      <img src="https://img.shields.io/matrix/sonixd:matrix.org?color=black&label=matrix&logo=matrix&logoColor=white"
-      alt="Matrix">
-    </a>
-  </p>
-
----
-
-## MAINTENANCE NOTICE
-
-Feishin is currently undergoing a major rewrite. New feature requests will not be accepted. The rewrite is being actively developed at the [audioling](https://github.com/audioling/audioling) repository.
-
-Follow the repository or join the discord/matrix server for updates.
 
 ---
 
@@ -47,7 +34,7 @@ Rewrite of [Sonixd](https://github.com/jeffvli/sonixd).
 -   [x] Scrobble playback to your server
 -   [x] Smart playlist editor (Navidrome)
 -   [x] Synchronized and unsynchronized lyrics support
--   [ ] [Request a feature](https://github.com/jeffvli/feishin/issues) or [view taskboard](https://github.com/users/jeffvli/projects/5/views/1)
+-   [ ] [Request a feature](https://github.com/2048khz-gachi-rmx/feishin/issues)
 
 ## Screenshots
 
@@ -57,51 +44,13 @@ Rewrite of [Sonixd](https://github.com/jeffvli/sonixd).
 
 ### Desktop (recommended)
 
-Download the [latest desktop client](https://github.com/jeffvli/feishin/releases). The desktop client is the recommended way to use Feishin. It supports both the MPV and web player backends, as well as includes built-in fetching for lyrics.
+Download the [latest desktop client](https://github.com/2048khz-gachi-rmx/feishin/releases). The desktop client is the recommended way to use Feishin. It supports both the MPV and web player backends, as well as includes built-in fetching for lyrics.
 
 #### macOS Notes
 
 If you're using a device running macOS 12 (Monterey) or higher, [check here](https://github.com/jeffvli/feishin/issues/104#issuecomment-1553914730) for instructions on how to remove the app from quarantine.
 
 For media keys to work, you will be prompted to allow Feishin to be a Trusted Accessibility Client. After allowing, you will need to restart Feishin for the privacy settings to take effect.
-
-### Web and Docker
-
-Visit [https://feishin.vercel.app](https://feishin.vercel.app) to use the hosted web version of Feishin. The web client only supports the web player backend.
-
-Feishin is also available as a Docker image. The images are hosted via `ghcr.io` and are available to view [here](https://github.com/jeffvli/feishin/pkgs/container/feishin). You can run the container using the following commands:
-
-```bash
-# Run the latest version
-docker run --name feishin -p 9180:9180 ghcr.io/jeffvli/feishin:latest
-
-# Build the image locally
-docker build -t feishin .
-docker run --name feishin -p 9180:9180 feishin
-```
-
-#### Docker Compose
-
-To install via Docker Compose use the following snippit. This also works on Portainer.
-
-```yaml
-services:
-    feishin:
-        container_name: feishin
-        image: 'ghcr.io/jeffvli/feishin:latest'
-        environment:
-            - SERVER_NAME=jellyfin # pre defined server name
-            - SERVER_LOCK=true # When true AND name/type/url are set, only username/password can be toggled
-            - SERVER_TYPE=jellyfin # navidrome also works
-            - SERVER_URL= # http://address:port
-            - PUID=1000
-            - PGID=1000
-            - UMASK=002
-            - TZ=America/Los_Angeles
-        ports:
-            - 9180:9180
-        restart: unless-stopped
-```
 
 ### Configuration
 
