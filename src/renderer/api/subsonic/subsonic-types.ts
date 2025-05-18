@@ -66,15 +66,29 @@ const genreItem = z.object({
     name: z.string(),
 });
 
+const simpleArtist = z.object({
+    id: z.string(),
+    name: z.string(),
+});
+
+const contributor = z.object({
+    artist: simpleArtist,
+    role: z.string(),
+    subRole: z.string().optional(),
+});
+
 const song = z.object({
     album: z.string().optional(),
+    albumArtists: z.array(simpleArtist),
     albumId: id.optional(),
     artist: z.string().optional(),
     artistId: id.optional(),
+    artists: z.array(simpleArtist),
     averageRating: z.number().optional(),
     bitRate: z.number().optional(),
     bpm: z.number().optional(),
     contentType: z.string(),
+    contributors: z.array(contributor).optional(),
     coverArt: z.string().optional(),
     created: z.string(),
     discNumber: z.number(),
@@ -101,12 +115,16 @@ const song = z.object({
 
 const album = z.object({
     album: z.string(),
+    albumArtists: z.array(simpleArtist),
     artist: z.string(),
     artistId: id,
+    artists: z.array(simpleArtist),
+    contributors: z.array(contributor).optional(),
     coverArt: z.string(),
     created: z.string(),
     duration: z.number(),
     genre: z.string().optional(),
+    genres: z.array(genreItem).optional(),
     id,
     isCompilation: z.boolean().optional(),
     isDir: z.boolean(),
@@ -138,12 +156,13 @@ const albumListParameters = z.object({
 const albumList = z.array(album.omit({ song: true }));
 
 const albumArtist = z.object({
-    album: z.array(album),
+    album: z.array(album).optional(),
     albumCount: z.string(),
     artistImageUrl: z.string().optional(),
     coverArt: z.string().optional(),
     id,
     name: z.string(),
+    roles: z.array(z.string()).optional(),
     starred: z.string().optional(),
 });
 
@@ -157,6 +176,7 @@ const artistListEntry = albumArtist.pick({
     coverArt: true,
     id: true,
     name: true,
+    roles: true,
     starred: true,
 });
 
@@ -502,8 +522,24 @@ const getAlbumList2 = z.object({
     }),
 });
 
+const albumInfoParameters = z.object({
+    id: z.string(),
+});
+
+const albumInfo = z.object({
+    albumInfo: z.object({
+        largeImageUrl: z.string().optional(),
+        lastFmUrl: z.string().optional(),
+        mediumImageUrl: z.string().optional(),
+        musicBrainzId: z.string().optional(),
+        notes: z.string().optional(),
+        smallImageUrl: z.string().optional(),
+    }),
+});
+
 export const ssType = {
     _parameters: {
+        albumInfo: albumInfoParameters,
         albumList: albumListParameters,
         artistInfo: artistInfoParameters,
         authenticate: authenticateParameters,
@@ -535,6 +571,7 @@ export const ssType = {
         album,
         albumArtist,
         albumArtistList,
+        albumInfo,
         albumList,
         albumListEntry,
         artistInfo,

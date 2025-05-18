@@ -9,6 +9,7 @@ import {
     Genre,
     ServerListItem,
     ServerType,
+    RelatedArtist,
 } from '/@/renderer/api/types';
 import z from 'zod';
 import { ndType } from './navidrome-types';
@@ -41,7 +42,7 @@ const getCoverArtUrl = (args: {
         `?id=${args.coverArtId}` +
         `&${args.credential}` +
         '&v=1.13.0' +
-        '&c=feishin' +
+        '&c=Feishin' +
         `&size=${size}`
     );
 };
@@ -54,10 +55,73 @@ const normalizePlayDate = (item: WithDate): string | null => {
     return !item.playDate || item.playDate.includes('0001-') ? null : item.playDate;
 };
 
+const getArtists = (
+    item:
+        | z.infer<typeof ndType._response.song>
+        | z.infer<typeof ndType._response.playlistSong>
+        | z.infer<typeof ndType._response.album>,
+) => {
+    let albumArtists: RelatedArtist[] | undefined;
+    let artists: RelatedArtist[] | undefined;
+    let participants: Record<string, RelatedArtist[]> | null = null;
+
+    if (item.participants) {
+        participants = {};
+        for (const [role, list] of Object.entries(item.participants)) {
+            if (role === 'albumartist' || role === 'artist') {
+                const roleList = list.map((item) => ({
+                    id: item.id,
+                    imageUrl: null,
+                    name: item.name,
+                }));
+
+                if (role === 'albumartist') {
+                    albumArtists = roleList;
+                } else {
+                    artists = roleList;
+                }
+            } else {
+                const subRoles = new Map<string | undefined, RelatedArtist[]>();
+
+                for (const artist of list) {
+                    const item: RelatedArtist = {
+                        id: artist.id,
+                        imageUrl: null,
+                        name: artist.name,
+                    };
+
+                    if (subRoles.has(artist.subRole)) {
+                        subRoles.get(artist.subRole)!.push(item);
+                    } else {
+                        subRoles.set(artist.subRole, [item]);
+                    }
+                }
+
+                for (const [subRole, items] of subRoles.entries()) {
+                    if (subRole) {
+                        participants[`${role} (${subRole})`] = items;
+                    } else {
+                        participants[role] = items;
+                    }
+                }
+            }
+        }
+    }
+
+    if (albumArtists === undefined) {
+        albumArtists = [{ id: item.albumArtistId, imageUrl: null, name: item.albumArtist }];
+    }
+
+    if (artists === undefined) {
+        artists = [{ id: item.artistId, imageUrl: null, name: item.artist }];
+    }
+
+    return { albumArtists, artists, participants };
+};
+
 const normalizeSong = (
     item: z.infer<typeof ndType._response.song> | z.infer<typeof ndType._response.playlistSong>,
     server: ServerListItem | null,
-    deviceId: string,
     imageSize?: number,
 ): Song => {
     let id;
@@ -81,10 +145,9 @@ const normalizeSong = (
     const imagePlaceholderUrl = null;
     return {
         album: item.album,
-        albumArtists: [{ id: item.albumArtistId, imageUrl: null, name: item.albumArtist }],
         albumId: item.albumId,
+        ...getArtists(item),
         artistName: item.artist,
-        artists: [{ id: item.artistId, imageUrl: null, name: item.artist }],
         bitRate: item.bitRate,
         bpm: item.bpm ? item.bpm : null,
         channels: item.channels ? item.channels : null,
@@ -117,7 +180,7 @@ const normalizeSong = (
             item.rgAlbumPeak || item.rgTrackPeak
                 ? { album: item.rgAlbumPeak, track: item.rgTrackPeak }
                 : null,
-        playCount: item.playCount,
+        playCount: item.playCount || 0,
         playlistItemId,
         releaseDate: (item.releaseDate
             ? new Date(item.releaseDate)
@@ -127,7 +190,7 @@ const normalizeSong = (
         serverId: server?.id || 'unknown',
         serverType: ServerType.NAVIDROME,
         size: item.size,
-        streamUrl: `${server?.url}/rest/stream.view?id=${id}&v=1.13.0&c=feishin_${deviceId}&${server?.credential}`,
+        streamUrl: `${server?.url}/rest/stream.view?id=${id}&v=1.13.0&c=Feishin&${server?.credential}`,
         trackNumber: item.trackNumber,
         uniqueId: nanoid(),
         updatedAt: item.updatedAt,
@@ -156,12 +219,11 @@ const normalizeAlbum = (
 
     return {
         albumArtist: item.albumArtist,
-        albumArtists: [{ id: item.albumArtistId, imageUrl: null, name: item.albumArtist }],
-        artists: [{ id: item.artistId, imageUrl: null, name: item.artist }],
+        ...getArtists(item),
         backdropImageUrl: imageBackdropUrl,
         comment: item.comment || null,
         createdAt: item.createdAt.split('T')[0],
-        duration: item.duration * 1000 || null,
+        duration: item.duration !== undefined ? item.duration * 1000 : null,
         genres: (item.genres || []).map((genre) => ({
             id: genre.id,
             imageUrl: null,
@@ -181,7 +243,7 @@ const normalizeAlbum = (
             : item.originalYear
               ? new Date(item.originalYear, 0, 1).toISOString()
               : null,
-        playCount: item.playCount,
+        playCount: item.playCount || 0,
         releaseDate: (item.releaseDate
             ? new Date(item.releaseDate)
             : new Date(item.minYear, 0, 1)
@@ -191,7 +253,7 @@ const normalizeAlbum = (
         serverType: ServerType.NAVIDROME,
         size: item.size,
         songCount: item.songCount,
-        songs: item.songs ? item.songs.map((song) => normalizeSong(song, server, '')) : undefined,
+        songs: item.songs ? item.songs.map((song) => normalizeSong(song, server)) : undefined,
         uniqueId: nanoid(),
         updatedAt: item.updatedAt,
         userFavorite: item.starred,
@@ -216,8 +278,25 @@ const normalizeAlbumArtist = (
         });
     }
 
+    let albumCount: number;
+    let songCount: number;
+
+    if (item.stats) {
+        albumCount = Math.max(
+            item.stats.albumartist?.albumCount ?? 0,
+            item.stats.artist?.albumCount ?? 0,
+        );
+        songCount = Math.max(
+            item.stats.albumartist?.songCount ?? 0,
+            item.stats.artist?.songCount ?? 0,
+        );
+    } else {
+        albumCount = item.albumCount;
+        songCount = item.songCount;
+    }
+
     return {
-        albumCount: item.albumCount,
+        albumCount,
         backgroundImageUrl: null,
         biography: item.biography || null,
         duration: null,
@@ -233,7 +312,7 @@ const normalizeAlbumArtist = (
         lastPlayedAt: normalizePlayDate(item),
         mbz: item.mbzArtistId || null,
         name: item.name,
-        playCount: item.playCount,
+        playCount: item.playCount || 0,
         serverId: server?.id || 'unknown',
         serverType: ServerType.NAVIDROME,
         similarArtists:
@@ -242,7 +321,7 @@ const normalizeAlbumArtist = (
                 imageUrl: artist?.artistImageUrl || null,
                 name: artist.name,
             })) || null,
-        songCount: item.songCount,
+        songCount,
         userFavorite: item.starred,
         userRating: item.rating,
     };

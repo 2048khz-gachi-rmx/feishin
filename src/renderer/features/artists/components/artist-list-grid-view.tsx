@@ -8,9 +8,9 @@ import { api } from '/@/renderer/api';
 import { queryKeys } from '/@/renderer/api/query-keys';
 import {
     AlbumArtist,
-    AlbumArtistListQuery,
-    AlbumArtistListResponse,
-    AlbumArtistListSort,
+    ArtistListQuery,
+    ArtistListResponse,
+    ArtistListSort,
     LibraryItem,
 } from '/@/renderer/api/types';
 import { ALBUMARTIST_CARD_ROWS } from '/@/renderer/components';
@@ -22,30 +22,30 @@ import { useCurrentServer, useListStoreActions } from '/@/renderer/store';
 import { CardRow, ListDisplayType } from '/@/renderer/types';
 import { useHandleFavorite } from '/@/renderer/features/shared/hooks/use-handle-favorite';
 
-interface AlbumArtistListGridViewProps {
+interface ArtistListGridViewProps {
     gridRef: MutableRefObject<VirtualInfiniteGridRef | null>;
     itemCount?: number;
 }
 
-export const AlbumArtistListGridView = ({ itemCount, gridRef }: AlbumArtistListGridViewProps) => {
+export const ArtistListGridView = ({ itemCount, gridRef }: ArtistListGridViewProps) => {
     const queryClient = useQueryClient();
     const server = useCurrentServer();
     const handlePlayQueueAdd = usePlayQueueAdd();
 
     const { pageKey } = useListContext();
-    const { grid, display, filter } = useListStoreByKey<AlbumArtistListQuery>({ key: pageKey });
+    const { grid, display, filter } = useListStoreByKey<ArtistListQuery>({ key: pageKey });
     const { setGrid } = useListStoreActions();
     const handleFavorite = useHandleFavorite({ gridRef, server });
 
     const fetchInitialData = useCallback(() => {
-        const query: Omit<AlbumArtistListQuery, 'startIndex' | 'limit'> = {
+        const query: Omit<ArtistListQuery, 'startIndex' | 'limit'> = {
             ...filter,
         };
 
-        const queriesFromCache: [QueryKey, AlbumArtistListResponse][] = queryClient.getQueriesData({
+        const queriesFromCache: [QueryKey, ArtistListResponse][] = queryClient.getQueriesData({
             exact: false,
             fetchStatus: 'idle',
-            queryKey: queryKeys.albumArtists.list(server?.id || '', query),
+            queryKey: queryKeys.artists.list(server?.id || '', query),
             stale: false,
         });
 
@@ -72,18 +72,18 @@ export const AlbumArtistListGridView = ({ itemCount, gridRef }: AlbumArtistListG
 
     const fetch = useCallback(
         async ({ skip: startIndex, take: limit }: { skip: number; take: number }) => {
-            const query: AlbumArtistListQuery = {
+            const query: ArtistListQuery = {
                 ...filter,
                 limit,
                 startIndex,
             };
 
-            const queryKey = queryKeys.albumArtists.list(server?.id || '', query);
+            const queryKey = queryKeys.artists.list(server?.id || '', query);
 
-            const albumArtistsRes = await queryClient.fetchQuery(
+            const artistsRes = await queryClient.fetchQuery(
                 queryKey,
                 async ({ signal }) =>
-                    api.controller.getAlbumArtistList({
+                    api.controller.getArtistList({
                         apiClientProps: {
                             server,
                             signal,
@@ -93,7 +93,7 @@ export const AlbumArtistListGridView = ({ itemCount, gridRef }: AlbumArtistListG
                 { cacheTime: 1000 * 60 * 1 },
             );
 
-            return albumArtistsRes;
+            return artistsRes;
         },
         [filter, queryClient, server],
     );
@@ -109,30 +109,30 @@ export const AlbumArtistListGridView = ({ itemCount, gridRef }: AlbumArtistListG
         const rows: CardRow<AlbumArtist>[] = [ALBUMARTIST_CARD_ROWS.name];
 
         switch (filter.sortBy) {
-            case AlbumArtistListSort.DURATION:
+            case ArtistListSort.DURATION:
                 rows.push(ALBUMARTIST_CARD_ROWS.duration);
                 break;
-            case AlbumArtistListSort.FAVORITED:
+            case ArtistListSort.FAVORITED:
                 break;
-            case AlbumArtistListSort.NAME:
+            case ArtistListSort.NAME:
                 break;
-            case AlbumArtistListSort.ALBUM_COUNT:
+            case ArtistListSort.ALBUM_COUNT:
                 rows.push(ALBUMARTIST_CARD_ROWS.albumCount);
                 break;
-            case AlbumArtistListSort.PLAY_COUNT:
+            case ArtistListSort.PLAY_COUNT:
                 rows.push(ALBUMARTIST_CARD_ROWS.playCount);
                 break;
-            case AlbumArtistListSort.RANDOM:
+            case ArtistListSort.RANDOM:
                 break;
-            case AlbumArtistListSort.RATING:
+            case ArtistListSort.RATING:
                 rows.push(ALBUMARTIST_CARD_ROWS.rating);
                 break;
-            case AlbumArtistListSort.RECENTLY_ADDED:
+            case ArtistListSort.RECENTLY_ADDED:
                 break;
-            case AlbumArtistListSort.SONG_COUNT:
+            case ArtistListSort.SONG_COUNT:
                 rows.push(ALBUMARTIST_CARD_ROWS.songCount);
                 break;
-            case AlbumArtistListSort.RELEASE_DATE:
+            case ArtistListSort.RELEASE_DATE:
                 break;
         }
 
@@ -156,12 +156,12 @@ export const AlbumArtistListGridView = ({ itemCount, gridRef }: AlbumArtistListG
                         itemCount={itemCount || 0}
                         itemGap={grid?.itemGap ?? 10}
                         itemSize={grid?.itemSize || 200}
-                        itemType={LibraryItem.ALBUM_ARTIST}
+                        itemType={LibraryItem.ARTIST}
                         loading={itemCount === undefined || itemCount === null}
                         minimumBatchSize={40}
                         route={{
-                            route: AppRoute.LIBRARY_ALBUM_ARTISTS_DETAIL,
-                            slugs: [{ idProperty: 'id', slugProperty: 'albumArtistId' }],
+                            route: AppRoute.LIBRARY_ARTISTS_DETAIL,
+                            slugs: [{ idProperty: 'id', slugProperty: 'artistId' }],
                         }}
                         width={width}
                         onScroll={handleGridScroll}
