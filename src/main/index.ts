@@ -652,7 +652,7 @@ if (!singleInstance) {
 
     app.whenReady()
         .then(() => {
-            app.setAccessibilitySupportEnabled(false)
+            app.setAccessibilitySupportEnabled(false);
             protocol.handle('feishin', async (request) => {
                 const filePath = `file://${request.url.slice('feishin://'.length)}`;
                 const response = await net.fetch(filePath);
