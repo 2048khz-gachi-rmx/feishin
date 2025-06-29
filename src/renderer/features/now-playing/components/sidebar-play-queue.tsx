@@ -20,7 +20,7 @@ export const SidebarPlayQueue = () => {
         <VirtualGridContainer>
             <Box
                 display={!isWeb ? 'flex' : undefined}
-                h="65px"
+                h="37px"
             >
                 <PlayQueueListControls
                     tableRef={queueRef}
