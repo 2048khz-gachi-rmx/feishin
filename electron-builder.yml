@@ -71,5 +71,5 @@ linux:
 npmRebuild: false
 publish:
     provider: github
-    owner: jeffvli
+    owner: 2048khz-gachi-rmx
     repo: feishin
