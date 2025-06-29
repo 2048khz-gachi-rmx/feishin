@@ -1,15 +1,17 @@
 import isElectron from 'is-electron';
-import { NumberInput, Switch, TextInput } from '/@/renderer/components';
+import { useTranslation } from 'react-i18next';
+
 import {
     SettingOption,
     SettingsSection,
 } from '/@/renderer/features/settings/components/settings-section';
 import {
     useDiscordSetttings,
-    useSettingsStoreActions,
     useGeneralSettings,
+    useSettingsStoreActions,
 } from '/@/renderer/store';
-import { useTranslation } from 'react-i18next';
+import { Switch } from '/@/shared/components/switch/switch';
+import { TextInput } from '/@/shared/components/text-input/text-input';
 
 export const DiscordSettings = () => {
     const { t } = useTranslation();
@@ -74,53 +76,24 @@ export const DiscordSettings = () => {
         },
         {
             control: (
-                <NumberInput
-                    value={settings.updateInterval}
-                    onChange={(e) => {
-                        let value = e ? Number(e) : 0;
-                        if (value < 15) {
-                            value = 15;
-                        }
-
-                        setSettings({
-                            discord: {
-                                ...settings,
-                                updateInterval: value,
-                            },
-                        });
-                    }}
-                />
-            ),
-            description: t('setting.discordUpdateInterval', {
-                context: 'description',
-                postProcess: 'sentenceCase',
-            }),
-            isHidden: !isElectron(),
-            title: t('setting.discordUpdateInterval', {
-                discord: 'Discord',
-                postProcess: 'sentenceCase',
-            }),
-        },
-        {
-            control: (
                 <Switch
-                    checked={settings.enableIdle}
+                    checked={settings.showPaused}
                     onChange={(e) => {
                         setSettings({
                             discord: {
                                 ...settings,
-                                enableIdle: e.currentTarget.checked,
+                                showPaused: e.currentTarget.checked,
                             },
                         });
                     }}
                 />
             ),
-            description: t('setting.discordIdleStatus', {
+            description: t('setting.discordPausedStatus', {
                 context: 'description',
                 postProcess: 'sentenceCase',
             }),
             isHidden: !isElectron(),
-            title: t('setting.discordIdleStatus', {
+            title: t('setting.discordPausedStatus', {
                 postProcess: 'sentenceCase',
             }),
         },

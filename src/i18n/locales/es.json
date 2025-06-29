@@ -257,7 +257,15 @@
         "translationTargetLanguage": "idioma final de la traducción",
         "translationTargetLanguage_description": "lengua de destino de la traducción",
         "lastfmApiKey_description": "la clave API para {{lastfm}}. Requerida para la portada",
-        "lastfmApiKey": "Clave API para {{lastfm}}"
+        "lastfmApiKey": "Clave API para {{lastfm}}",
+        "discordServeImage": "Servir imágenes de {{discord}} desde el servidor",
+        "discordServeImage_description": "Comparte el arte de la portada para el estado de actividad de {{discord}} desde el propio servidor, solo disponible para Jellyfin y Navidrome",
+        "lastfm": "Mostrar enlaces de last.fm",
+        "lastfm_description": "Muestra enlaces a last.fm en las páginas de artistas/álbumes",
+        "musicbrainz": "Mostrar enlaces de MusicBrainz",
+        "musicbrainz_description": "Muestra enlaces a MusicBrainz en las páginas de artistas/álbumes, donde exista mbid",
+        "neteaseTranslation": "Activar traducciones de NetEase",
+        "neteaseTranslation_description": "Cuando se habilita, busca y muestra letras traducidas desde NetEase si está disponible."
     },
     "action": {
         "editPlaylist": "editar $t(entity.playlist_one)",
@@ -375,7 +383,11 @@
         "share": "Compartir",
         "trackGain": "Ganancia de pista",
         "preview": "Vista previa",
-        "translation": "traducción"
+        "translation": "traducción",
+        "additionalParticipants": "Participantes adicionales",
+        "tags": "Etiquetas",
+        "newVersion": "Una nueva versión ha sido instalada ({{version}})",
+        "viewReleaseNotes": "Ver notas de lanzamiento"
     },
     "error": {
         "remotePortWarning": "reiniciar el servidor para aplicar el nuevo puerto",
@@ -399,7 +411,8 @@
         "loginRateError": "demasiados intentos de inicio de sesión, por favor inténtalo en unos segundos",
         "badAlbum": "Estás viendo esta página porque esta canción no forma parte de un álbum. Este problema puede ocurrir si tienes una canción en el nivel superior de tu carpeta de música. Jellyfin solo agrupa pistas si están en una carpeta.",
         "networkError": "Ocurrió un error de red",
-        "openError": "No se pudo abrir el archivo"
+        "openError": "No se pudo abrir el archivo",
+        "badValue": "Opción inválida \"{{value}}\". Este valor ya no existe"
     },
     "filter": {
         "mostPlayed": "más reproducido",
@@ -458,7 +471,8 @@
             "home": "$t(common.home)",
             "artists": "$t(entity.artist_other)",
             "albumArtists": "$t(entity.albumArtist_other)",
-            "shared": "compartido $t(entity.playlist_other)"
+            "shared": "compartido $t(entity.playlist_other)",
+            "myLibrary": "Mi biblioteca"
         },
         "appMenu": {
             "selectServer": "seleccionar servidor",
@@ -644,7 +658,8 @@
         },
         "queryEditor": {
             "input_optionMatchAll": "coincidir todos",
-            "input_optionMatchAny": "coincidir cualquiera"
+            "input_optionMatchAny": "coincidir cualquiera",
+            "title": "Editor de consultas"
         },
         "shareItem": {
             "createFailed": "No se pudo crear el recurso compartido (¿está habilitado el uso compartido?)",
@@ -726,7 +741,9 @@
             "view": {
                 "card": "tarjeta",
                 "table": "tabla",
-                "poster": "cartel"
+                "poster": "cartel",
+                "list": "Lista",
+                "grid": "Cuadrícula"
             }
         }
     },

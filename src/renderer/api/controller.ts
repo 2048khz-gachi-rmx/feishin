@@ -1,10 +1,14 @@
-import { useAuthStore } from '/@/renderer/store';
-import { toast } from '/@/renderer/components/toast/index';
-import type { ServerType, ControllerEndpoint, AuthenticationResponse } from '/@/renderer/api/types';
+import i18n from '/@/i18n/i18n';
+import { JellyfinController } from '/@/renderer/api/jellyfin/jellyfin-controller';
 import { NavidromeController } from '/@/renderer/api/navidrome/navidrome-controller';
 import { SubsonicController } from '/@/renderer/api/subsonic/subsonic-controller';
-import { JellyfinController } from '/@/renderer/api/jellyfin/jellyfin-controller';
-import i18n from '/@/i18n/i18n';
+import { useAuthStore } from '/@/renderer/store';
+import { toast } from '/@/shared/components/toast/toast';
+import {
+    AuthenticationResponse,
+    ControllerEndpoint,
+    ServerType,
+} from '/@/shared/types/domain-types';
 
 type ApiController = {
     jellyfin: ControllerEndpoint;
@@ -93,6 +97,9 @@ export const controller: GeneralController = {
     getAlbumDetail(args) {
         return apiController('getAlbumDetail', args.apiClientProps.server?.type)?.(args);
     },
+    getAlbumInfo(args) {
+        return apiController('getAlbumInfo', args.apiClientProps.server?.type)?.(args);
+    },
     getAlbumList(args) {
         return apiController('getAlbumList', args.apiClientProps.server?.type)?.(args);
     },
@@ -116,9 +123,6 @@ export const controller: GeneralController = {
     },
     getMusicFolderList(args) {
         return apiController('getMusicFolderList', args.apiClientProps.server?.type)?.(args);
-    },
-    getAlbumInfo(args) {
-        return apiController('getAlbumInfo', args.apiClientProps.server?.type)?.(args);
     },
     getPlaylistDetail(args) {
         return apiController('getPlaylistDetail', args.apiClientProps.server?.type)?.(args);
@@ -155,6 +159,9 @@ export const controller: GeneralController = {
     },
     getStructuredLyrics(args) {
         return apiController('getStructuredLyrics', args.apiClientProps.server?.type)?.(args);
+    },
+    getTags(args) {
+        return apiController('getTags', args.apiClientProps.server?.type)?.(args);
     },
     getTopSongs(args) {
         return apiController('getTopSongs', args.apiClientProps.server?.type)?.(args);
