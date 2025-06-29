@@ -37,7 +37,7 @@ export function IsUpdatedDialog() {
                 <Group wrap="nowrap">
                     <Button
                         component="a"
-                        href={`https://github.com/jeffvli/feishin/releases/tag/v${version}`}
+                        href={`https://github.com/2048khz-gachi-rmx/feishin/releases/tag/v${version}`}
                         onClick={handleDismiss}
                         rightSection={<Icon icon="externalLink" />}
                         target="_blank"
