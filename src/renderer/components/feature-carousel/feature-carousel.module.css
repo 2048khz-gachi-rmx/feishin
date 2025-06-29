@@ -1,7 +1,7 @@
 .carousel {
     position: relative;
-    height: 35vh;
-    min-height: 250px;
+    height: 232px;
+    min-height: 232px;
     max-height: 300px;
     padding: var(--theme-spacing-md);
     overflow: hidden;
@@ -22,14 +22,14 @@
     z-index: 15;
     display: flex;
     grid-area: image;
-    align-items: flex-end;
+    align-items: center;
 }
 
 .info-column {
     z-index: 15;
     display: flex;
     grid-area: info;
-    align-items: flex-end;
+    align-items: center;
     width: 100%;
     max-width: 100%;
     padding-left: 1rem;
@@ -70,4 +70,16 @@
     overflow: hidden;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
+}
+
+/* Display the left-right buttons (for scrolling the carousel)
+   over everything at bottom right, not as part of the carousel layout
+   This way, it can always stay in one place regardless of the track details' size
+   (multiline, etc.). It'd be a good idea to do this for the play button too, but... eh...
+   */
+.leftright-row {
+    position: absolute;
+    right: 1rem;
+    bottom: 1rem;
+    z-index: 100;
 }

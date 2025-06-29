@@ -162,22 +162,6 @@ export const FeatureCarousel = ({ data }: FeatureCarouselProps) => {
                                                 { postProcess: 'titleCase' },
                                             )}
                                         </PlayButton>
-                                        <Group gap="sm">
-                                            <Button
-                                                onClick={handlePrevious}
-                                                radius="lg"
-                                                variant="subtle"
-                                            >
-                                                <Icon icon="arrowLeftS" />
-                                            </Button>
-                                            <Button
-                                                onClick={handleNext}
-                                                radius="lg"
-                                                variant="subtle"
-                                            >
-                                                <Icon icon="arrowRightS" />
-                                            </Button>
-                                        </Group>
                                     </Group>
                                 </Stack>
                             </div>
@@ -190,6 +174,23 @@ export const FeatureCarousel = ({ data }: FeatureCarouselProps) => {
                         <div className={styles.backgroundImageOverlay} />
                     </motion.div>
                 )}
+
+                <Group gap="sm" className={styles['leftright-row']}>
+                    <Button
+                        onClick={handlePrevious}
+                        radius="lg"
+                        variant="subtle"
+                    >
+                        <Icon icon="arrowLeftS" />
+                    </Button>
+                    <Button
+                        onClick={handleNext}
+                        radius="lg"
+                        variant="subtle"
+                    >
+                        <Icon icon="arrowRightS" />
+                    </Button>
+                </Group>
             </AnimatePresence>
         </Link>
     );
