@@ -387,4 +387,12 @@ button {
     .current-song > .row-index.playing .current-song-index {
         display: none;
     }
+
+    .ag-row.current-song::before, .ag-row.current-song {
+        /* god if only https://blog.frost.kiwi/GLSL-noise-and-radial-gradient/ */
+        background: linear-gradient(155deg,
+            color-mix(in srgb, var(--theme-colors-primary-filled) 30%, transparent),
+            transparent 100%);
+        background-color: transparent
+    }
 }
