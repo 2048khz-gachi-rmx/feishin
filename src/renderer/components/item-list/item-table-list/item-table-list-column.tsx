@@ -64,7 +64,10 @@ import {
     TableItemProps,
     TableItemSize,
 } from '/@/renderer/components/item-list/item-table-list/item-table-list';
-import { useItemTableListColumnResizeLive } from '/@/renderer/components/item-list/item-table-list/item-table-list-context';
+import {
+    useIsActiveRow,
+    useItemTableListColumnResizeLive,
+} from '/@/renderer/components/item-list/item-table-list/item-table-list-context';
 import { ItemControls, ItemListItem } from '/@/renderer/components/item-list/types';
 import { Flex } from '/@/shared/components/flex/flex';
 import { Icon } from '/@/shared/components/icon/icon';
@@ -591,6 +594,24 @@ function ClampedCell({
     );
 }
 
+// Builds the candidate row ids used to detect whether this row is the
+// currently-playing (active) row. Mirrors the id/_uniqueId comparison done by
+// the column-level useIsActiveRow consumers.
+function getActiveRowCandidateIds(item: unknown): string[] {
+    if (!item || typeof item !== 'object' || Array.isArray(item)) {
+        return [];
+    }
+
+    const { _uniqueId, id } = item as { _uniqueId?: unknown; id?: unknown };
+
+    return [id, _uniqueId]
+        .filter(
+            (value): value is number | string =>
+                typeof value === 'string' || typeof value === 'number',
+        )
+        .map(String);
+}
+
 // When an enlarged album image extends past the album group's combined row
 // height, the last row of the group is grown (in getRowHeight) to reserve the
 // leftover space. This returns the standard (un-grown) height to clamp that
@@ -706,6 +727,7 @@ export const TableColumnTextContainer = (
             ? props.internalState.extractRowId(item)
             : undefined;
     const isSelected = useItemSelectionState(props.internalState, itemRowId || undefined);
+    const isActiveRow = useIsActiveRow(...getActiveRowCandidateIds(isDataRow ? item : null));
     const clampHeight = getAlbumGroupClampHeight(props);
 
     const isDragging = props.isDragging ?? false;
@@ -820,6 +842,11 @@ export const TableColumnTextContainer = (
                 [styles.withHorizontalBorder]: showHorizontalBorder && clampHeight === null,
                 [styles.withVerticalBorder]: showVerticalBorder,
             })}
+            data-active-row={
+                isDataRow && isActiveRow && props.type !== TableColumn.ALBUM_GROUP
+                    ? 'true'
+                    : undefined
+            }
             data-row-index={isDataRow ? `${props.tableId}-${props.rowIndex}` : undefined}
             onClick={handleClick}
             onContextMenu={handleContextMenu}
@@ -873,6 +900,7 @@ export const TableColumnContainer = (
             ? props.internalState.extractRowId(item)
             : undefined;
     const isSelected = useItemSelectionState(props.internalState, itemRowId || undefined);
+    const isActiveRow = useIsActiveRow(...getActiveRowCandidateIds(isDataRow ? item : null));
     const clampHeight = getAlbumGroupClampHeight(props);
 
     const isDragging = props.isDragging ?? false;
@@ -992,6 +1020,11 @@ export const TableColumnContainer = (
                 [styles.withHorizontalBorder]: showHorizontalBorder && clampHeight === null,
                 [styles.withVerticalBorder]: showVerticalBorder,
             })}
+            data-active-row={
+                isDataRow && isActiveRow && props.type !== TableColumn.ALBUM_GROUP
+                    ? 'true'
+                    : undefined
+            }
             data-exclude-row-drag-border={props.type === TableColumn.ALBUM_GROUP ? true : undefined}
             data-row-index={isDataRow ? `${props.tableId}-${props.rowIndex}` : undefined}
             onClick={handleClick}

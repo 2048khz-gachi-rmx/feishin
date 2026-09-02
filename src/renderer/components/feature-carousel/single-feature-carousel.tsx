@@ -318,13 +318,13 @@ export const SingleFeatureCarousel = ({ data, onNearEnd }: SingleFeatureCarousel
             </AnimatePresence>
 
             {data.length > 1 && (
-                <>
+                <div className={styles.navArrows}>
                     <ActionIcon
                         className={styles.navArrowLeft}
                         icon="arrowLeftS"
-                        iconProps={{ size: 'xl' }}
+                        iconProps={{ size: 'sm' }}
                         onClick={handlePrevious}
-                        radius="50%"
+                        radius="md"
                         size="md"
                         styles={{
                             icon: {
@@ -337,9 +337,9 @@ export const SingleFeatureCarousel = ({ data, onNearEnd }: SingleFeatureCarousel
                     <ActionIcon
                         className={styles.navArrowRight}
                         icon="arrowRightS"
-                        iconProps={{ size: 'xl' }}
+                        iconProps={{ size: 'sm' }}
                         onClick={handleNext}
-                        radius="50%"
+                        radius="md"
                         size="md"
                         styles={{
                             icon: {
@@ -349,7 +349,7 @@ export const SingleFeatureCarousel = ({ data, onNearEnd }: SingleFeatureCarousel
                         }}
                         variant="subtle"
                     />
-                </>
+                </div>
             )}
         </div>
     );
