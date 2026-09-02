@@ -233,7 +233,7 @@ export const useAppStore = createWithEqualityFn<AppSlice>()(
                 latestVersion: null,
                 pageSidebar: {
                     album: true,
-                    song: true,
+                    song: false,
                 },
                 platform: Platform.WINDOWS,
                 privateMode: false,
