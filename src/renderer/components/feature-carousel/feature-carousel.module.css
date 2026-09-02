@@ -78,7 +78,7 @@
 .single-carousel-container .carousel-item .content {
     flex-direction: row;
     gap: var(--theme-spacing-md);
-    align-items: flex-end;
+    align-items: center;
     min-height: 240px;
     padding: var(--theme-spacing-xl);
 }
@@ -298,6 +298,48 @@
 .single-carousel-container:hover .nav-arrow-right {
     pointer-events: auto;
     opacity: 1;
+}
+
+/* The single feature carousel content height can change (e.g. multi-line titles),
+   so keep the nav arrows in a fixed spot at the bottom-right instead of letting
+   them follow the content around. The carousel row has horizontal padding
+   (--theme-spacing-md) that the hero image doesn't fill, so include that in the
+   arrow offset to keep a real gap from the visible image edge. */
+.single-carousel-container .nav-arrows {
+    position: absolute;
+    right: calc(var(--theme-spacing-md) + var(--theme-spacing-lg));
+    bottom: var(--theme-spacing-md);
+    z-index: 30;
+    display: flex;
+    gap: var(--theme-spacing-xs);
+    align-items: center;
+}
+
+.single-carousel-container .nav-arrows .nav-arrow-left,
+.single-carousel-container .nav-arrows .nav-arrow-right {
+    position: static;
+    top: auto;
+    right: auto;
+    left: auto;
+
+    --ai-size-md: 2rem;
+
+    width: 3rem;
+    height: 2rem;
+    pointer-events: auto;
+    opacity: 1;
+    transform: none;
+    transition: background-color 0.2s ease;
+}
+
+.single-carousel-container .nav-arrows .nav-arrow-left:hover,
+.single-carousel-container .nav-arrows .nav-arrow-right:hover {
+    background: rgb(255 255 255 / 20%);
+}
+
+.single-carousel-container .nav-arrows .nav-arrow-left:active,
+.single-carousel-container .nav-arrows .nav-arrow-right:active {
+    background: rgb(255 255 255 / 30%);
 }
 
 @container (min-width: $mantine-breakpoint-xs) {

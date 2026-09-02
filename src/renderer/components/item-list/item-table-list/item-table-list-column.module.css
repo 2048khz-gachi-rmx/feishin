@@ -143,6 +143,29 @@
     border-bottom-color: transparent;
 }
 
+/* Currently-playing row tint. The table virtualizes each cell as its own
+   transformed element, so per-cell backgrounds would restart per column. The
+   actual gradient band is painted on the scroll container by
+   use-active-row-gradient (background-attachment: local), which spans the full
+   row. Active cells must stay transparent so that band shows through. */
+.container.data-row[data-active-row='true'] {
+    background-color: transparent;
+}
+
+.container.data-row[data-active-row='true'].with-horizontal-border,
+.container.data-row[data-active-row='true'].with-vertical-border {
+    border-color: transparent;
+}
+
+/* When the active row is hovered or selected, layer a translucent primary tint
+   on top of the band (instead of the usual opaque surface) so the highlight
+   reads as brighter rather than covering the gradient. */
+.container.data-row.row-hover-highlight-enabled[data-row-hovered='true'][data-active-row='true'],
+.container.data-row.row-selected[data-active-row='true'] {
+    background-color: color-mix(in srgb, var(--theme-colors-primary-filled) 10%, transparent);
+    box-shadow: none;
+}
+
 .container.data-row.dragging {
     opacity: 0.5;
 }
@@ -338,7 +361,7 @@
     width: 8px;
     margin-right: -4px;
     cursor: col-resize;
-    opacity: 0;
+    opacity: 0.5;
     transition: opacity 0.3s ease;
 }
 
@@ -349,7 +372,7 @@
     bottom: 0;
     width: 2px;
     content: '';
-    background-color: transparent;
+    background-color: color-mix(in srgb, var(--theme-colors-border) 60%, transparent);
     transition: background-color 0.15s ease;
 }
 

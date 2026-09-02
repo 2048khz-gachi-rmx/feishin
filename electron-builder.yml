@@ -69,7 +69,7 @@ npmRebuild: false
 afterAllArtifactBuild: scripts/after-all-artifact-build.mjs
 publish:
     provider: github
-    owner: jeffvli
+    owner: 2048khz-gachi-rmx
     repo: feishin
     channel: latest
     releaseType: draft

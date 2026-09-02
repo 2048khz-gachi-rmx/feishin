@@ -121,7 +121,7 @@ const hasRequiredStateItemProperties = (
 };
 
 export enum TableItemSize {
-    COMPACT = 40,
+    COMPACT = 44,
     DEFAULT = 66,
     LARGE = 88,
 }
@@ -1696,6 +1696,79 @@ const BaseItemTableList = ({
         scrollToTableIndex,
         scrollToTableOffset,
     });
+
+    // Paint a continuous gradient behind the currently-playing row. Cells are
+    // virtualized as individually transformed elements, so per-cell backgrounds
+    // would restart for every column (particularly bad for gradients).
+    // Instead, draw the band onto each grid's scroll container with `background-attachment: local`,
+    // so it spans the full row width and stays glued to the row while scrolling.
+    //
+    // The row lookup is memoized so the O(n) scan only runs when the data or the active row changes.
+    const activeRowGridIndex = useMemo(() => {
+        if (!activeRowId) return -1;
+
+        // dataWithGroups already includes the header row (index 0) when the row
+        // model is built from data (shouldUseAccessor === false), so the found
+        // index is already a grid index. When the accessor path is used,
+        // dataWithGroups is only the header placeholder, so we fall back to the
+        // data index and add the pinned header row.
+        const found = dataWithGroups.findIndex((item) => {
+            if (!item || typeof item !== 'object') return false;
+            return extractRowId(item) === activeRowId;
+        });
+
+        if (found !== -1) return found;
+
+        const dataIndex = internalState.findItemIndex(activeRowId);
+        return dataIndex === -1 ? -1 : dataIndex + pinnedRowCount;
+    }, [activeRowId, dataWithGroups, extractRowId, internalState, pinnedRowCount]);
+
+    useEffect(() => {
+        const scrollers = [
+            rowRef.current?.childNodes?.[0],
+            pinnedLeftColumnRef.current?.childNodes?.[0],
+            pinnedRightColumnRef.current?.childNodes?.[0],
+        ] as Array<HTMLDivElement | null | undefined>;
+
+        const clearGradient = () => {
+            for (const scroller of scrollers) {
+                if (!scroller) continue;
+                scroller.style.backgroundImage = 'none';
+            }
+        };
+
+        if (activeRowGridIndex === -1) {
+            clearGradient();
+            return;
+        }
+
+        const top = calculateScrollTopForIndex(activeRowGridIndex);
+        const height = getRowHeightAtIndex(activeRowGridIndex);
+
+        if (!height) {
+            clearGradient();
+            return;
+        }
+
+        const gradient =
+            'linear-gradient(155deg, color-mix(in srgb, var(--theme-colors-primary-filled) 30%, transparent), transparent 100%)';
+
+        for (const scroller of scrollers) {
+            if (!scroller) continue;
+            scroller.style.backgroundImage = gradient;
+            scroller.style.backgroundAttachment = 'local';
+            scroller.style.backgroundRepeat = 'no-repeat';
+            scroller.style.backgroundSize = `100% ${height}px`;
+            scroller.style.backgroundPosition = `0 ${top}px`;
+        }
+    }, [
+        activeRowGridIndex,
+        calculateScrollTopForIndex,
+        getRowHeightAtIndex,
+        pinnedLeftColumnRef,
+        pinnedRightColumnRef,
+        rowRef,
+    ]);
 
     const controls = useDefaultItemListControls({
         onColumnReordered,

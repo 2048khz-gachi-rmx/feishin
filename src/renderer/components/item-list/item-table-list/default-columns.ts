@@ -295,7 +295,7 @@ export const SONG_TABLE_COLUMNS: DefaultTableColumn[] = [
     {
         align: 'center',
         autoSize: false,
-        isEnabled: true,
+        isEnabled: false,
         label: i18n.t('table.config.label.favorite'),
         pinned: null,
         value: TableColumn.USER_FAVORITE,

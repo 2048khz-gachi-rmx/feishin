@@ -109,7 +109,7 @@ const HomeRoute = () => {
                     <Stack
                         gap="2xl"
                         mb="5rem"
-                        pt={windowBarStyle === Platform.WEB ? '5rem' : '3rem'}
+                        pt={windowBarStyle === Platform.WEB ? '3rem' : '1rem'}
                         px="2rem"
                         ref={containerQuery.ref}
                     >

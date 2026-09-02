@@ -57,7 +57,7 @@ const ALPHA_UPDATER_CONFIG: {
 };
 
 const GITHUB_UPDATER_CONFIG = {
-    owner: 'jeffvli',
+    owner: '2048khz-gachi-rmx',
     provider: 'github' as const,
     repo: 'feishin',
 };
@@ -1152,6 +1152,8 @@ if (!singleInstance) {
 
     app.whenReady()
         .then(() => {
+            app.setAccessibilitySupportEnabled(false);
+
             log.info('App ready', {
                 arch: process.arch,
                 electron: process.versions.electron,
