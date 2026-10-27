@@ -250,9 +250,10 @@ export const SingleFeatureCarousel = ({ data, onNearEnd }: SingleFeatureCarousel
 
     const canNavigate = data && data.length > 1;
 
-    const wheelCooldownRef = useRef(0);
-    const wheelThreshold = 10;
-    const wheelCooldownMs = 250;
+    const wheelAccumulatorRef = useRef(0);
+    // Distance-based: one page per 50px of scroll travel, no clock gate. See
+    // the same handler in grid-carousel-v2.tsx for the rationale.
+    const wheelStepPx = 50;
 
     const handleWheel = useCallback(
         (event: React.WheelEvent<HTMLDivElement>) => {
@@ -264,24 +265,35 @@ export const SingleFeatureCarousel = ({ data, onNearEnd }: SingleFeatureCarousel
                 return;
             }
 
-            const now = Date.now();
-            const elapsed = now - wheelCooldownRef.current;
+            // Normalize non-pixel delta modes (Firefox reports lines, not px).
+            let delta = event.deltaY;
 
-            const horizontalDelta = Math.abs(event.deltaY);
+            if (event.deltaMode === 1) {
+                delta *= 16;
+            } else if (event.deltaMode === 2) {
+                delta *= 100;
+            }
 
-            if (horizontalDelta < wheelThreshold || elapsed < wheelCooldownMs) {
+            if (Math.sign(wheelAccumulatorRef.current) !== Math.sign(delta)) {
+                wheelAccumulatorRef.current = 0;
+            }
+
+            wheelAccumulatorRef.current += delta;
+
+            if (Math.abs(wheelAccumulatorRef.current) < wheelStepPx) {
                 return;
             }
 
-            if (event.deltaY > 0) {
-                wheelCooldownRef.current = now;
+            const direction = wheelAccumulatorRef.current > 0 ? 1 : -1;
+            wheelAccumulatorRef.current = 0;
+
+            if (direction > 0) {
                 handleNext();
-            } else if (event.deltaY < 0) {
-                wheelCooldownRef.current = now;
+            } else if (direction < 0) {
                 handlePrevious();
             }
         },
-        [canNavigate, data, handleNext, handlePrevious, wheelCooldownMs, wheelThreshold],
+        [canNavigate, data, handleNext, handlePrevious],
     );
 
     if (!data || data.length === 0) {
