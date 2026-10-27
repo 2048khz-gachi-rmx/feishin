@@ -141,8 +141,10 @@
     border-radius: 100%;
     isolation: isolate;
     opacity: 1;
-    transition: opacity 0.1s ease-in-out;
-    transition: transform 0.1s ease-in-out;
+    transition:
+        background-color 0.15s ease-out,
+        opacity 0.1s ease-in-out,
+        transform 0.1s ease-in-out;
 
     --play-button-scale: 1;
     --long-press-duration: 500ms;
@@ -194,6 +196,26 @@
 .play-button.secondary {
     width: 32px;
     height: 32px;
+}
+
+/* Used by the play button group popout: highlight on hover/press instead of
+   scaling, so a row of three buttons does not visibly jitter. */
+.play-button.highlight {
+    /* Without a transform, this is the containing block for the absolutely
+       positioned long-press circle in ::before. */
+    position: relative;
+
+    &:hover {
+        background-color: darken(white, 12%);
+        opacity: 1;
+        transform: none;
+    }
+
+    &:active {
+        background-color: darken(white, 24%);
+        opacity: 1;
+        transform: none;
+    }
 }
 
 @keyframes expand-long-press {

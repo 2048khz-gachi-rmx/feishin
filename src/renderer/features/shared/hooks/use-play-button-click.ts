@@ -112,7 +112,8 @@ export const usePlayButtonClick = ({
                 '--long-press-duration': '300ms',
                 '--play-button-scale': isLongPressing ? 1.15 : 1,
                 opacity: isDisabled ? 0.5 : 1,
-                transition: 'opacity 0.2s ease-in-out, transform 0.2s ease-in-out',
+                transition:
+                    'opacity 0.2s ease-in-out, transform 0.2s ease-in-out, background-color 0.15s ease-out',
             } as React.CSSProperties,
         };
     }, [isDisabled, isPressing, isLongPressing]);

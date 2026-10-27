@@ -2,6 +2,7 @@ import { motion } from 'motion/react';
 import { useEffect, useRef, useState } from 'react';
 
 import styles from './play-button-group.module.css';
+import playButtonStyles from './play-button.module.css';
 
 import i18n from '/@/i18n/i18n';
 import { PlayButton } from '/@/renderer/features/shared/components/play-button';
@@ -153,17 +154,23 @@ const containerVariants = {
     visible: {
         opacity: 1,
         transition: {
-            delayChildren: 0.1,
-            staggerChildren: 0.1,
+            delayChildren: 0,
+            staggerChildren: 0.05,
         },
     },
 };
 
+const EASE_OUT = [0.16, 1, 0.3, 1] as const;
+
 const getItemVariants = (position: PopoverPosition) => {
     const baseTransition = {
-        damping: 24,
-        stiffness: 300,
-        type: 'spring' as const,
+        duration: 0.25,
+        ease: EASE_OUT,
+    };
+
+    const exitTransition = {
+        duration: 0.2,
+        ease: EASE_OUT,
     };
 
     switch (position) {
@@ -172,9 +179,7 @@ const getItemVariants = (position: PopoverPosition) => {
                 exit: {
                     opacity: 0,
                     scale: 0.8,
-                    transition: {
-                        duration: 0.2,
-                    },
+                    transition: exitTransition,
                     y: -10,
                 },
                 hidden: { opacity: 0, scale: 0.8, y: -10 },
@@ -190,9 +195,7 @@ const getItemVariants = (position: PopoverPosition) => {
                 exit: {
                     opacity: 0,
                     scale: 0.8,
-                    transition: {
-                        duration: 0.2,
-                    },
+                    transition: exitTransition,
                     x: 10,
                 },
                 hidden: { opacity: 0, scale: 0.8, x: 10 },
@@ -208,9 +211,7 @@ const getItemVariants = (position: PopoverPosition) => {
                 exit: {
                     opacity: 0,
                     scale: 0.8,
-                    transition: {
-                        duration: 0.2,
-                    },
+                    transition: exitTransition,
                     x: -10,
                 },
                 hidden: { opacity: 0, scale: 0.8, x: -10 },
@@ -226,9 +227,7 @@ const getItemVariants = (position: PopoverPosition) => {
                 exit: {
                     opacity: 0,
                     scale: 0.8,
-                    transition: {
-                        duration: 0.2,
-                    },
+                    transition: exitTransition,
                     y: 10,
                 },
                 hidden: { opacity: 0, scale: 0.8, y: 10 },
@@ -250,7 +249,7 @@ const getPositionStyles = (
         return { display: 'none' };
     }
 
-    const gap = 8;
+    const gap = 0;
 
     switch (position) {
         case 'bottom':
@@ -397,6 +396,7 @@ export const PlayButtonGroupPopover = ({
                         <motion.div key={button.type} variants={combinedVariants}>
                             <Tooltip label={button.label}>
                                 <PlayButton
+                                    classNames={playButtonStyles.highlight}
                                     fill={button.type === Play.NOW}
                                     icon={button.icon}
                                     isSecondary={button.secondary}
