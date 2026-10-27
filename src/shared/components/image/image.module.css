@@ -19,7 +19,7 @@
 
 .image.animated {
     opacity: 1;
-    animation: fade-in 0.2s ease-in;
+    animation: fade-in 0.12s ease-out;
 }
 
 .loader {
