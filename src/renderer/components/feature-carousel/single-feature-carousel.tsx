@@ -34,16 +34,16 @@ const itemVariants = {
         opacity: 1,
         scale: 1,
         transition: {
-            duration: 0.2,
-            ease: 'easeOut' as const,
+            duration: 0.25,
+            ease: [0.25, 1, 0.45, 1] as const,
         },
         y: 0,
     },
     exit: {
         opacity: 0,
         transition: {
-            duration: 0.3,
-            ease: 'easeIn' as const,
+            duration: 0.2,
+            ease: [0.25, 1, 0.45, 1] as const,
         },
         y: 0,
     },

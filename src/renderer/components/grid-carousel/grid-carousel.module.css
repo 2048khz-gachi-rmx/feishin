@@ -37,6 +37,7 @@
 }
 
 .grid-carousel-viewport {
+    position: relative;
     width: 100%;
     min-height: 0;
 }

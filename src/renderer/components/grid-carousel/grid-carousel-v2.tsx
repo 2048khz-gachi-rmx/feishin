@@ -53,10 +53,14 @@ const MemoizedCard = memo(({ content }: { content: ReactNode }) => (
 MemoizedCard.displayName = 'MemoizedCard';
 
 const pageVariants: Variants = {
-    animate: { opacity: 1, transition: { duration: 0.3, ease: 'easeOut' }, x: 0 },
+    animate: {
+        opacity: 1,
+        transition: { duration: 0.25, ease: [0.25, 1, 0.45, 1] },
+        x: 0,
+    },
     exit: (custom: { isNext: boolean }) => ({
         opacity: 0,
-        transition: { duration: 0.3, ease: 'easeIn' },
+        transition: { duration: 0.2, ease: [0.25, 1, 0.45, 1] },
         x: custom.isNext ? -100 : 100,
     }),
     initial: (custom: { isNext: boolean }) => ({ opacity: 0, x: custom.isNext ? 100 : -100 }),
