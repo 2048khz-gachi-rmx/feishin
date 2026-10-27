@@ -38,8 +38,17 @@
 
 .grid-carousel-viewport {
     position: relative;
+    display: grid;
+    grid-template-areas: 'stack';
     width: 100%;
     min-height: 0;
+}
+
+/* Both the incoming and outgoing page share one grid cell, so they overlap
+   without absolute positioning. AnimatePresence's popLayout mode measures the
+   exiting node and makes it absolute, which can land it a row off. */
+.grid-page {
+    grid-area: stack;
 }
 
 .grid {

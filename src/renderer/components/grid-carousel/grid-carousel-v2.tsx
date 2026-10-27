@@ -172,9 +172,13 @@ function BaseGridCarousel(props: GridCarouselProps) {
     const hasMoreCards = (currentPage.page + 1) * cardsToShow * rowCount < cards.length;
     const isNextDisabled = !hasMoreCards && (hasNextPage === false || hasNextPage === undefined);
 
-    const wheelCooldownRef = useRef(0);
-    const wheelThreshold = 10;
-    const wheelCooldownMs = 250;
+    const wheelAccumulatorRef = useRef(0);
+    // Purely distance-based: one page per 50px of scroll travel. A mouse notch
+    // is 100px and arrives as one event, so a notch is always exactly one page.
+    // A trackpad sends many small deltas that add up to the same distance, so
+    // page rate follows finger travel with no clock gate. At most one page per
+    // event, so a single hard flick cannot skip several pages at once.
+    const wheelStepPx = 50;
 
     const handleWheel = useCallback(
         (event: React.WheelEvent<HTMLDivElement>) => {
@@ -182,31 +186,35 @@ function BaseGridCarousel(props: GridCarouselProps) {
                 return;
             }
 
-            const now = Date.now();
-            const elapsed = now - wheelCooldownRef.current;
+            // Normalize non-pixel delta modes (Firefox reports lines, not px).
+            let delta = event.deltaY;
 
-            const horizontalDelta = Math.abs(event.deltaY);
+            if (event.deltaMode === 1) {
+                delta *= 16;
+            } else if (event.deltaMode === 2) {
+                delta *= 100;
+            }
 
-            if (horizontalDelta < wheelThreshold || elapsed < wheelCooldownMs) {
+            if (Math.sign(wheelAccumulatorRef.current) !== Math.sign(delta)) {
+                wheelAccumulatorRef.current = 0;
+            }
+
+            wheelAccumulatorRef.current += delta;
+
+            if (Math.abs(wheelAccumulatorRef.current) < wheelStepPx) {
                 return;
             }
 
-            if (event.deltaY > 0 && !isNextDisabled) {
-                wheelCooldownRef.current = now;
+            const direction = wheelAccumulatorRef.current > 0 ? 1 : -1;
+            wheelAccumulatorRef.current = 0;
+
+            if (direction > 0 && !isNextDisabled) {
                 handleNextPage();
-            } else if (event.deltaY < 0 && !isPrevDisabled) {
-                wheelCooldownRef.current = now;
+            } else if (direction < 0 && !isPrevDisabled) {
                 handlePrevPage();
             }
         },
-        [
-            handleNextPage,
-            handlePrevPage,
-            isNextDisabled,
-            isPrevDisabled,
-            wheelCooldownMs,
-            wheelThreshold,
-        ],
+        [handleNextPage, handlePrevPage, isNextDisabled, isPrevDisabled],
     );
 
     const swipeCooldownRef = useRef(0);
@@ -333,28 +341,30 @@ function BaseGridCarousel(props: GridCarouselProps) {
                             </div>
                         )}
                     </motion.div>
-                    <AnimatePresence custom={currentPage} initial={false} mode="wait">
-                        <motion.div
-                            animate="animate"
-                            className={styles.grid}
-                            custom={currentPage}
-                            exit="exit"
-                            initial="initial"
-                            key={currentPage.page}
-                            onWheel={handleWheel}
-                            style={
-                                {
-                                    '--cards-to-show': cardsToShow,
-                                    '--row-count': rowCount,
-                                } as React.CSSProperties
-                            }
-                            variants={pageVariants}
-                        >
-                            {visibleCards.map((card) => (
-                                <MemoizedCard content={card.content} key={card.id} />
-                            ))}
-                        </motion.div>
-                    </AnimatePresence>
+                    <div className={styles.gridCarouselViewport}>
+                        <AnimatePresence custom={currentPage} initial={false}>
+                            <motion.div
+                                animate="animate"
+                                className={`${styles.grid} ${styles.gridPage}`}
+                                custom={currentPage}
+                                exit="exit"
+                                initial="initial"
+                                key={currentPage.page}
+                                onWheel={handleWheel}
+                                style={
+                                    {
+                                        '--cards-to-show': cardsToShow,
+                                        '--row-count': rowCount,
+                                    } as React.CSSProperties
+                                }
+                                variants={pageVariants}
+                            >
+                                {visibleCards.map((card) => (
+                                    <MemoizedCard content={card.content} key={card.id} />
+                                ))}
+                            </motion.div>
+                        </AnimatePresence>
+                    </div>
                 </>
             )}
         </div>
