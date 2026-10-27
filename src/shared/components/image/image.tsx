@@ -8,6 +8,7 @@ import {
     ReactNode,
     useEffect,
     useMemo,
+    useRef,
     useState,
 } from 'react';
 
@@ -89,6 +90,22 @@ export function BaseImage({
     const [debouncedImageRequest] = useDebouncedValue(rawImageRequest, 100, {
         waitForInitial: true,
     });
+
+    // Snapshot the cache state once at mount (or when the cache key changes).
+    // The live isInSessionCache flips true the moment the image finishes, which
+    // would cancel the fade mid-animation and snap to opaque.
+    const cacheSnapshotRef = useRef<{ cacheKey: string | undefined; wasCached: boolean }>({
+        cacheKey: undefined,
+        wasCached: false,
+    });
+    if (cacheSnapshotRef.current.cacheKey !== rawImageRequest?.cacheKey) {
+        cacheSnapshotRef.current = {
+            cacheKey: rawImageRequest?.cacheKey,
+            wasCached: isInSessionCache,
+        };
+    }
+    const wasCachedAtMount = cacheSnapshotRef.current.wasCached;
+
     const effectiveImageRequest =
         isInSessionCache || !enableDebounce ? rawImageRequest : debouncedImageRequest;
 
@@ -134,7 +151,8 @@ export function BaseImage({
             {nativeImage.displaySrc ? (
                 <img
                     className={clsx(styles.image, className, {
-                        [styles.animated]: enableAnimation || Boolean(hashUrl),
+                        [styles.animated]:
+                            (enableAnimation || Boolean(hashUrl)) && !wasCachedAtMount,
                     })}
                     decoding="async"
                     fetchPriority={fetchPriority}
