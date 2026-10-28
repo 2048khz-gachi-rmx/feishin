@@ -23,6 +23,25 @@
     cursor: grabbing;
 }
 
+/* Prev/next pair sits flush with no gap, so a click between them always hits
+   one of the two instead of falling through to the header. */
+.nav-button-left,
+.nav-button-right {
+    width: 2.5rem !important;
+    min-width: 2.5rem !important;
+    border-radius: 0 !important;
+}
+
+.nav-button-left {
+    border-top-left-radius: var(--theme-radius-sm) !important;
+    border-bottom-left-radius: var(--theme-radius-sm) !important;
+}
+
+.nav-button-right {
+    border-top-right-radius: var(--theme-radius-sm) !important;
+    border-bottom-right-radius: var(--theme-radius-sm) !important;
+}
+
 .custom-title-container {
     display: flex;
     gap: var(--theme-spacing-sm);
