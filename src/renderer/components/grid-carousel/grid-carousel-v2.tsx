@@ -298,8 +298,9 @@ function BaseGridCarousel(props: GridCarouselProps) {
                                         />
                                     )}
                                 </Group>
-                                <Group gap="xs" justify="end">
+                                <Group gap={0} justify="end">
                                     <ActionIcon
+                                        className={styles.navButtonLeft}
                                         disabled={isPrevDisabled}
                                         icon="arrowLeftS"
                                         iconProps={{ size: 'lg' }}
@@ -308,6 +309,7 @@ function BaseGridCarousel(props: GridCarouselProps) {
                                         variant="subtle"
                                     />
                                     <ActionIcon
+                                        className={styles.navButtonRight}
                                         disabled={isNextDisabled}
                                         icon="arrowRightS"
                                         iconProps={{ size: 'lg' }}
@@ -320,8 +322,9 @@ function BaseGridCarousel(props: GridCarouselProps) {
                         ) : (
                             <div className={styles.customTitleContainer}>
                                 <div className={styles.customTitleContent}>{title}</div>
-                                <Group gap="xs" justify="end">
+                                <Group gap={0} justify="end">
                                     <ActionIcon
+                                        className={styles.navButtonLeft}
                                         disabled={isPrevDisabled}
                                         icon="arrowLeftS"
                                         iconProps={{ size: 'lg' }}
@@ -330,6 +333,7 @@ function BaseGridCarousel(props: GridCarouselProps) {
                                         variant="subtle"
                                     />
                                     <ActionIcon
+                                        className={styles.navButtonRight}
                                         disabled={isNextDisabled}
                                         icon="arrowRightS"
                                         iconProps={{ size: 'lg' }}

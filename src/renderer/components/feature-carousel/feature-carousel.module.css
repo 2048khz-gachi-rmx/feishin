@@ -311,7 +311,7 @@
     bottom: var(--theme-spacing-md);
     z-index: 30;
     display: flex;
-    gap: var(--theme-spacing-xs);
+    gap: 0;
     align-items: center;
 }
 
@@ -324,12 +324,23 @@
 
     --ai-size-md: 2rem;
 
-    width: 3rem;
+    width: 3.5rem;
     height: 2rem;
     pointer-events: auto;
+    border-radius: 0;
     opacity: 1;
     transform: none;
     transition: background-color 0.2s ease;
+}
+
+.single-carousel-container .nav-arrows .nav-arrow-left {
+    border-top-left-radius: var(--theme-radius-sm);
+    border-bottom-left-radius: var(--theme-radius-sm);
+}
+
+.single-carousel-container .nav-arrows .nav-arrow-right {
+    border-top-right-radius: var(--theme-radius-sm);
+    border-bottom-right-radius: var(--theme-radius-sm);
 }
 
 .single-carousel-container .nav-arrows .nav-arrow-left:hover,

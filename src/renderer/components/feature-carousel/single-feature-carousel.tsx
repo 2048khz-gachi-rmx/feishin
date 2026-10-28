@@ -336,7 +336,6 @@ export const SingleFeatureCarousel = ({ data, onNearEnd }: SingleFeatureCarousel
                         icon="arrowLeftS"
                         iconProps={{ size: 'sm' }}
                         onClick={handlePrevious}
-                        radius="md"
                         size="md"
                         styles={{
                             icon: {
@@ -351,7 +350,6 @@ export const SingleFeatureCarousel = ({ data, onNearEnd }: SingleFeatureCarousel
                         icon="arrowRightS"
                         iconProps={{ size: 'sm' }}
                         onClick={handleNext}
-                        radius="md"
                         size="md"
                         styles={{
                             icon: {
