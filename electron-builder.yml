@@ -6,6 +6,11 @@ directories:
     buildResources: assets
 files:
     - 'out/**/*'
+    - '!out/web/**'
+    - '!out/**/*.map'
+    - '!node_modules/**/*.map'
+    # main-process maps stay: source-map-support is installed in production
+    - 'out/main/**/*.map'
     - 'package.json'
 extraResources:
     - assets/**
