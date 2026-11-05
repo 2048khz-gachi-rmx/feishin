@@ -87,6 +87,7 @@ export const WebPlayerEngine = (props: WebPlayerEngineProps) => {
     const networkRetryCount2 = useRef(0);
     const [ReactPlayerComponent, setReactPlayerComponent] = useState<any>(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [hasMounted, setHasMounted] = useState(false);
 
     useEffect(() => {
         let isMounted = true;
@@ -109,6 +110,10 @@ export const WebPlayerEngine = (props: WebPlayerEngineProps) => {
         return () => {
             isMounted = false;
         };
+    }, []);
+
+    useEffect(() => {
+        setHasMounted(true);
     }, []);
 
     const [internalVolume1, setInternalVolume1] = useState(() => normalizeVolume(volume));
@@ -346,7 +351,7 @@ export const WebPlayerEngine = (props: WebPlayerEngineProps) => {
                 playing={playerNum === 1 && playerStatus === PlayerStatus.PLAYING}
                 progressInterval={isTransitioning ? 10 : 250}
                 ref={player1Ref}
-                url={src1 || EMPTY_SOURCE}
+                url={hasMounted ? src1 || EMPTY_SOURCE : EMPTY_SOURCE}
                 volume={volume1}
                 width={0}
             />
@@ -372,7 +377,7 @@ export const WebPlayerEngine = (props: WebPlayerEngineProps) => {
                 playing={playerNum === 2 && playerStatus === PlayerStatus.PLAYING}
                 progressInterval={isTransitioning ? 10 : 250}
                 ref={player2Ref}
-                url={src2 || EMPTY_SOURCE}
+                url={hasMounted ? src2 || EMPTY_SOURCE : EMPTY_SOURCE}
                 volume={volume2}
                 width={0}
             />
