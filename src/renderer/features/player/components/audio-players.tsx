@@ -112,6 +112,8 @@ function detectBrowserProfile() {
     return DIRECT_PLAY_PROFILES;
 }
 
+detectBrowserProfile();
+
 function isSafari() {
     const ua = navigator.userAgent;
     return ua.includes('Safari') && !ua.includes('Chrome') && !ua.includes('Chromium');
@@ -127,9 +129,7 @@ export const AudioPlayers = () => {
         webAudio,
     } = usePlaybackSettings();
     const { setWebAudio, webAudio: audioContext } = useWebAudio();
-    useEffect(() => {
-        detectBrowserProfile();
-    }, []);
+
     return (
         <>
             <SleepTimerHook />
