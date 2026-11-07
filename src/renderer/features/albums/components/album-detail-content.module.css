@@ -8,7 +8,11 @@
     display: flex;
     flex-direction: column;
     gap: var(--theme-spacing-lg);
-    padding: 1rem 2rem 5rem;
+    padding: 0.25rem 2rem 5rem;
+
+    @container (max-width: $mantine-breakpoint-sm) {
+        padding: 0.25rem 1rem 4rem;
+    }
 }
 
 .content-layout {
@@ -26,12 +30,19 @@
 
 .metadata-column {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     flex-wrap: wrap;
     grid-area: metadata;
-    gap: var(--theme-spacing-xl);
-    align-items: center;
-    text-align: center;
+    gap: var(--theme-spacing-md) var(--theme-spacing-xl);
+    align-items: flex-start;
+    justify-content: flex-start;
+    text-align: left;
+
+    & > * {
+        flex: 0 1 auto;
+        min-width: 160px;
+        max-width: 100%;
+    }
 }
 
 .songs-column {
@@ -62,11 +73,11 @@
 }
 
 .external-links-group {
-    justify-content: center;
+    justify-content: flex-start;
 }
 
 .metadata-pill-group {
-    align-items: center;
+    align-items: flex-start;
 }
 
 .pill-group-wrapper {
@@ -74,31 +85,7 @@
     width: 100%;
 
     & > div {
-        justify-content: center;
-    }
-}
-
-@container (min-width: $mantine-breakpoint-sm) {
-    .metadata-column {
-        flex-direction: row;
         justify-content: flex-start;
-        text-align: left;
-    }
-
-    .external-links-group {
-        justify-content: flex-start;
-    }
-
-    .metadata-pill-group {
-        align-items: flex-start;
-    }
-
-    .pill-group-wrapper {
-        justify-content: flex-start;
-
-        & > div {
-            justify-content: flex-start;
-        }
     }
 }
 
@@ -122,8 +109,14 @@
     .metadata-column {
         position: sticky;
         top: calc(var(--theme-spacing-lg) + 4rem);
+        flex-direction: column;
         align-self: start;
         width: 300px;
         max-height: calc(100vh - 90px - var(--theme-spacing-lg) - 4rem);
+
+        & > * {
+            flex: 0 0 auto;
+            min-width: 0;
+        }
     }
 }

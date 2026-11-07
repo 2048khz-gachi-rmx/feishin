@@ -38,6 +38,7 @@ interface LibraryHeaderProps {
     children?: ReactNode;
     compact?: boolean;
     containerClassName?: string;
+    imageFooter?: ReactNode;
     imageOverlay?: ReactNode;
     imagePlaceholderUrl?: null | string;
     imageUrl?: null | string;
@@ -64,6 +65,7 @@ export const LibraryHeader = forwardRef(
             children,
             compact,
             containerClassName,
+            imageFooter,
             imageOverlay,
             imageUrl,
             item,
@@ -165,69 +167,72 @@ export const LibraryHeader = forwardRef(
                 ref={ref}
             >
                 {topRight && <div className={styles.topRight}>{topRight}</div>}
-                {onImageFileDrop ? (
-                    <DragDropZone
-                        accept="image/*"
-                        className={styles.imageSection}
-                        mode="file"
-                        onFileSelected={(file) => void onImageFileDrop(file)}
-                        {...imageSectionSharedProps}
-                    >
-                        <ItemImage
-                            blurHash={item.blurHash}
-                            className={styles.image}
-                            containerClassName={styles.image}
-                            dominantColor={item.dominantColor}
-                            enableDebounce={false}
-                            enableViewport={false}
-                            explicitStatus={item.explicitStatus ?? null}
-                            fetchPriority="high"
-                            id={item.imageId}
-                            itemType={item.type as LibraryItem}
-                            src={imageUrl || ''}
-                            thumbHash={item.thumbHash}
-                            type="header"
-                        />
-                        {imageOverlay && (
-                            <div
-                                className={styles.imageOverlay}
-                                onClick={(e) => e.stopPropagation()}
-                                onKeyDown={(e) => e.stopPropagation()}
-                                role="presentation"
-                            >
-                                {imageOverlay}
-                            </div>
-                        )}
-                    </DragDropZone>
-                ) : (
-                    <div className={styles.imageSection} {...imageSectionSharedProps}>
-                        <ItemImage
-                            blurHash={item.blurHash}
-                            className={styles.image}
-                            containerClassName={styles.image}
-                            dominantColor={item.dominantColor}
-                            enableDebounce={false}
-                            enableViewport={false}
-                            explicitStatus={item.explicitStatus ?? null}
-                            fetchPriority="high"
-                            id={item.imageId}
-                            itemType={item.type as LibraryItem}
-                            src={imageUrl || ''}
-                            thumbHash={item.thumbHash}
-                            type="header"
-                        />
-                        {imageOverlay && (
-                            <div
-                                className={styles.imageOverlay}
-                                onClick={(e) => e.stopPropagation()}
-                                onKeyDown={(e) => e.stopPropagation()}
-                                role="presentation"
-                            >
-                                {imageOverlay}
-                            </div>
-                        )}
-                    </div>
-                )}
+                <div className={styles.imageColumn}>
+                    {onImageFileDrop ? (
+                        <DragDropZone
+                            accept="image/*"
+                            className={styles.imageSection}
+                            mode="file"
+                            onFileSelected={(file) => void onImageFileDrop(file)}
+                            {...imageSectionSharedProps}
+                        >
+                            <ItemImage
+                                blurHash={item.blurHash}
+                                className={styles.image}
+                                containerClassName={styles.image}
+                                dominantColor={item.dominantColor}
+                                enableDebounce={false}
+                                enableViewport={false}
+                                explicitStatus={item.explicitStatus ?? null}
+                                fetchPriority="high"
+                                id={item.imageId}
+                                itemType={item.type as LibraryItem}
+                                src={imageUrl || ''}
+                                thumbHash={item.thumbHash}
+                                type="header"
+                            />
+                            {imageOverlay && (
+                                <div
+                                    className={styles.imageOverlay}
+                                    onClick={(e) => e.stopPropagation()}
+                                    onKeyDown={(e) => e.stopPropagation()}
+                                    role="presentation"
+                                >
+                                    {imageOverlay}
+                                </div>
+                            )}
+                        </DragDropZone>
+                    ) : (
+                        <div className={styles.imageSection} {...imageSectionSharedProps}>
+                            <ItemImage
+                                blurHash={item.blurHash}
+                                className={styles.image}
+                                containerClassName={styles.image}
+                                dominantColor={item.dominantColor}
+                                enableDebounce={false}
+                                enableViewport={false}
+                                explicitStatus={item.explicitStatus ?? null}
+                                fetchPriority="high"
+                                id={item.imageId}
+                                itemType={item.type as LibraryItem}
+                                src={imageUrl || ''}
+                                thumbHash={item.thumbHash}
+                                type="header"
+                            />
+                            {imageOverlay && (
+                                <div
+                                    className={styles.imageOverlay}
+                                    onClick={(e) => e.stopPropagation()}
+                                    onKeyDown={(e) => e.stopPropagation()}
+                                    role="presentation"
+                                >
+                                    {imageOverlay}
+                                </div>
+                            )}
+                        </div>
+                    )}
+                    {imageFooter && <div className={styles.imageFooter}>{imageFooter}</div>}
+                </div>
                 {title && (
                     <div className={styles.metadataSection}>
                         {item.children ? (
@@ -336,33 +341,68 @@ export const calculateTitleSize = (title: string) => {
     return `clamp(1.75rem, ${baseSize}, 2.75rem)`;
 };
 
-interface LibraryHeaderMenuProps {
+interface LibraryHeaderImageActionsProps {
     favorite?: boolean;
-    onAlbumRadio?: () => void;
-    onArtistRadio?: () => void;
     onFavorite?: (e: React.MouseEvent<HTMLButtonElement>) => void;
-    onMore?: (e: React.MouseEvent<HTMLButtonElement>) => void;
-    onPlay?: (type: Play) => void;
     onRating?: (rating: number) => void;
-    onShuffle?: (e: React.MouseEvent<HTMLButtonElement>) => void;
     rating?: number;
 }
 
-export const LibraryHeaderMenu = ({
+interface LibraryHeaderMenuProps {
+    onAlbumRadio?: () => void;
+    onArtistRadio?: () => void;
+    onMore?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+    onPlay?: (type: Play) => void;
+    onShuffle?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+}
+
+export const LibraryHeaderImageActions = ({
     favorite,
-    onAlbumRadio,
-    onArtistRadio,
     onFavorite,
-    onMore,
-    onPlay,
     onRating,
     rating,
-}: LibraryHeaderMenuProps) => {
-    const { t } = useTranslation();
+}: LibraryHeaderImageActionsProps) => {
     const isMutatingRating = useIsMutatingRating();
     const isMutatingCreateFavorite = useIsMutatingCreateFavorite();
     const isMutatingDeleteFavorite = useIsMutatingDeleteFavorite();
     const isMutatingFavorite = isMutatingCreateFavorite || isMutatingDeleteFavorite;
+
+    if (!onRating && !onFavorite) return null;
+
+    return (
+        <Group className={styles.imageActions} gap="xs" justify="center" wrap="nowrap">
+            {onRating && (
+                <Rating
+                    onChange={onRating}
+                    readOnly={isMutatingRating}
+                    size="lg"
+                    value={rating || 0}
+                />
+            )}
+            {onFavorite && (
+                <ActionIcon
+                    className={styles.imageFavorite}
+                    disabled={isMutatingFavorite}
+                    icon="favorite"
+                    iconProps={{
+                        fill: favorite ? 'primary' : undefined,
+                    }}
+                    onClick={onFavorite}
+                    size="compact-md"
+                    variant="transparent"
+                />
+            )}
+        </Group>
+    );
+};
+
+export const LibraryHeaderMenu = ({
+    onAlbumRadio,
+    onArtistRadio,
+    onMore,
+    onPlay,
+}: LibraryHeaderMenuProps) => {
+    const { t } = useTranslation();
     const isPlayerFetching = useIsPlayerFetching();
 
     const handlePlayNow = usePlayButtonClick({
@@ -436,26 +476,6 @@ export const LibraryHeaderMenu = ({
                 )}
             </Group>
             <Group gap="sm" wrap="nowrap">
-                {onRating && (
-                    <Rating
-                        onChange={onRating}
-                        readOnly={isMutatingRating}
-                        size="lg"
-                        value={rating || 0}
-                    />
-                )}
-                {onFavorite && (
-                    <ActionIcon
-                        disabled={isMutatingFavorite}
-                        icon="favorite"
-                        iconProps={{
-                            fill: favorite ? 'primary' : undefined,
-                        }}
-                        onClick={onFavorite}
-                        size="lg"
-                        variant="transparent"
-                    />
-                )}
                 {onMore && (
                     <ActionIcon
                         icon="ellipsisHorizontal"

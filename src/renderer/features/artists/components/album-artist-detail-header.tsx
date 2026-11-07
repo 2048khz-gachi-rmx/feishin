@@ -14,6 +14,7 @@ import { ContextMenuController } from '/@/renderer/features/context-menu/context
 import { usePlayer } from '/@/renderer/features/player/context/player-context';
 import {
     LibraryHeader,
+    LibraryHeaderImageActions,
     LibraryHeaderMenu,
 } from '/@/renderer/features/shared/components/library-header';
 import { useSetFavorite } from '/@/renderer/features/shared/hooks/use-set-favorite';
@@ -278,6 +279,14 @@ export const AlbumArtistDetailHeader = forwardRef<HTMLDivElement, AlbumArtistDet
 
         return (
             <LibraryHeader
+                imageFooter={
+                    <LibraryHeaderImageActions
+                        favorite={detailQuery.data?.userFavorite}
+                        onFavorite={showFavorites ? handleFavorite : undefined}
+                        onRating={showRating ? handleUpdateRating : undefined}
+                        rating={detailQuery.data?.userRating || 0}
+                    />
+                }
                 imageOverlay={
                     <ArtistImageUploadOverlay
                         data={detailQuery.data}
@@ -313,13 +322,9 @@ export const AlbumArtistDetailHeader = forwardRef<HTMLDivElement, AlbumArtistDet
                             ))}
                     </Group>
                     <LibraryHeaderMenu
-                        favorite={detailQuery.data?.userFavorite}
-                        onFavorite={showFavorites ? handleFavorite : undefined}
                         onMore={handleMoreOptions}
                         onPlay={(type) => handlePlay(type)}
-                        onRating={showRating ? handleUpdateRating : undefined}
                         onShuffle={() => handlePlay(Play.SHUFFLE)}
-                        rating={detailQuery.data?.userRating || 0}
                     />
                 </Stack>
             </LibraryHeader>

@@ -20,7 +20,7 @@
 }
 
 .root.lg {
-    --rating-size: var(--theme-font-size-lg) !important;
+    --rating-size: var(--rating-size-override, var(--theme-font-size-lg)) !important;
 
     padding-right: var(--theme-spacing-md);
     padding-left: var(--theme-spacing-md);

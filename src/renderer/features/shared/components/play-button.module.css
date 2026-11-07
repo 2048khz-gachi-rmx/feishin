@@ -46,11 +46,22 @@
 }
 
 .wide-text-button {
+    min-width: 3rem;
     padding-right: var(--theme-spacing-xl);
     padding-left: var(--theme-spacing-xl);
     background: white;
     border-radius: var(--theme-radius-xl);
     transition: background-color 0.2s ease-in-out !important;
+
+    @container (max-width: $mantine-breakpoint-lg) {
+        padding-right: var(--theme-spacing-md);
+        padding-left: var(--theme-spacing-md);
+    }
+
+    @container (max-width: $mantine-breakpoint-xs) {
+        padding-right: var(--theme-spacing-sm);
+        padding-left: var(--theme-spacing-sm);
+    }
 
     .text {
         @container (max-width: $mantine-breakpoint-lg) {

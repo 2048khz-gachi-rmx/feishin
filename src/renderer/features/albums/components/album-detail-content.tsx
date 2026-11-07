@@ -73,7 +73,7 @@ const MetadataPillGroup = ({
     if (!items || items.length === 0) return null;
 
     return (
-        <Stack align="center" className={styles.metadataPillGroup} gap="xs">
+        <Stack className={styles.metadataPillGroup} gap="xs">
             <Text fw={600} isNoSelect size="sm" tt="uppercase">
                 {title}
             </Text>
@@ -213,7 +213,7 @@ const AlbumMetadataTags = ({ album }: AlbumMetadataTagsProps) => {
             <MetadataPillGroup items={defaultTagItems} title={t('common.tags')} />
 
             {recordLabels.length > 0 && (
-                <Stack align="center" className={styles.metadataPillGroup} gap="xs">
+                <Stack className={styles.metadataPillGroup} gap="xs">
                     <Text fw={600} isNoSelect size="sm" tt="uppercase">
                         {t('common.recordLabel')}
                     </Text>
@@ -242,7 +242,7 @@ const AlbumMetadataTags = ({ album }: AlbumMetadataTagsProps) => {
             <MetadataPillGroup items={moodTagItems} title={t('common.mood')} />
 
             {groupingItems.length > 0 && (
-                <Stack align="center" className={styles.metadataPillGroup} gap="xs">
+                <Stack className={styles.metadataPillGroup} gap="xs">
                     <Text fw={600} isNoSelect size="sm" tt="uppercase">
                         {t('common.grouping')}
                     </Text>
