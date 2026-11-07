@@ -12,6 +12,14 @@
     }
 }
 
+.negative-gap > * {
+    margin-bottom: var(--lyric-negative-gap);
+}
+
+.negative-gap > *:last-child {
+    margin-bottom: 0;
+}
+
 .preview {
     padding: 0 !important;
 }

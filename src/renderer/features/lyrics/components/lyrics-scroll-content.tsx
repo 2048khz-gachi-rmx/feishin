@@ -24,10 +24,19 @@ export const LyricsScrollContent = ({
     preview = false,
     style,
 }: LyricsScrollContentProps) => {
+    // Flex `gap` cannot be negative, so a negative gap is applied as a negative
+    // margin on each line (except the last) instead.
+    const negativeGap = gap !== undefined && gap < 0;
+
     const contentStyle = useMemo(() => {
+        const gapStyle: React.CSSProperties = {
+            '--lyric-negative-gap': negativeGap ? `${gap}px` : undefined,
+            gap: !negativeGap && gap !== undefined ? `${gap}px` : undefined,
+        } as React.CSSProperties;
+
         if (preview) {
             return {
-                gap: gap !== undefined ? `${gap}px` : undefined,
+                ...gapStyle,
                 padding: 0,
                 ...style,
             } as React.CSSProperties;
@@ -36,18 +45,23 @@ export const LyricsScrollContent = ({
         return {
             '--lyric-padding-left': `${paddingLeft}%`,
             '--lyric-padding-right': `${paddingRight}%`,
-            gap: gap !== undefined ? `${gap}px` : undefined,
+            ...gapStyle,
             paddingBottom: bottomScrollPadding,
             paddingLeft: `${paddingLeft}%`,
             paddingRight: `${paddingRight}%`,
             paddingTop: '10vh',
             ...style,
         } as React.CSSProperties;
-    }, [bottomScrollPadding, gap, paddingLeft, paddingRight, preview, style]);
+    }, [bottomScrollPadding, gap, negativeGap, paddingLeft, paddingRight, preview, style]);
 
     return (
         <div
-            className={clsx(styles.content, preview && styles.preview, className)}
+            className={clsx(
+                styles.content,
+                negativeGap && styles.negativeGap,
+                preview && styles.preview,
+                className,
+            )}
             style={contentStyle}
         >
             {children}

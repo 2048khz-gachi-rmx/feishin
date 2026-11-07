@@ -119,12 +119,13 @@ export const LyricsSettingsForm = ({ settingsKey }: LyricsSettingsFormProps) => 
                     defaultValue={displaySettings.gap}
                     label={(value) => `${value}px`}
                     marks={[
+                        { label: '-8', value: -8 },
                         { label: '0', value: 0 },
                         { label: '25', value: 25 },
                         { label: '50', value: 50 },
                     ]}
                     max={50}
-                    min={0}
+                    min={-8}
                     onChangeEnd={(value) => {
                         updateDisplaySetting({ gap: value });
                     }}
@@ -146,12 +147,13 @@ export const LyricsSettingsForm = ({ settingsKey }: LyricsSettingsFormProps) => 
                     defaultValue={displaySettings.gapUnsync}
                     label={(value) => `${value}px`}
                     marks={[
+                        { label: '-8', value: -8 },
                         { label: '0', value: 0 },
                         { label: '25', value: 25 },
                         { label: '50', value: 50 },
                     ]}
                     max={50}
-                    min={0}
+                    min={-8}
                     onChangeEnd={(value) => {
                         updateDisplaySetting({ gapUnsync: value });
                     }}
