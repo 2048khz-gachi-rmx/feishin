@@ -2575,8 +2575,8 @@ export const useSettingsStore = createWithEqualityFn<SettingsSlice>()(
                         const displaySettings = {
                             fontSize: defaultSettings.fontSize || 24,
                             fontSizeUnsync: defaultSettings.fontSizeUnsync || 24,
-                            gap: defaultSettings.gap || 24,
-                            gapUnsync: defaultSettings.gapUnsync || 24,
+                            gap: defaultSettings.gap ?? 24,
+                            gapUnsync: defaultSettings.gapUnsync ?? 24,
                         };
 
                         // Remove display properties from main settings

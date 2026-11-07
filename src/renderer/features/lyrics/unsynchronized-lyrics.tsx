@@ -38,11 +38,7 @@ export const UnsynchronizedLyrics = ({
             : displaySettings.fontSizeUnsync && displaySettings.fontSizeUnsync !== 0
               ? displaySettings.fontSizeUnsync
               : 24,
-        gapUnsync: preview
-            ? PREVIEW_GAP
-            : displaySettings.gapUnsync && displaySettings.gapUnsync !== 0
-              ? displaySettings.gapUnsync
-              : 24,
+        gapUnsync: preview ? PREVIEW_GAP : (displaySettings.gapUnsync ?? 24),
     };
     const lines = useMemo(() => {
         return lyrics.split('\n');

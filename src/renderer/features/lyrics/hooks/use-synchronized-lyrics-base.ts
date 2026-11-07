@@ -38,7 +38,7 @@ export const useSynchronizedLyricsBase = (settingsKey = 'default', offsetMs?: nu
                 displaySettings.fontSize && displaySettings.fontSize !== 0
                     ? displaySettings.fontSize
                     : 24,
-            gap: displaySettings.gap && displaySettings.gap !== 0 ? displaySettings.gap : 24,
+            gap: displaySettings.gap ?? 24,
             opacityNonActive: displaySettings.opacityNonActive,
             paddingLeft: displaySettings.paddingLeft ?? 0,
             paddingRight: displaySettings.paddingRight ?? 0,
