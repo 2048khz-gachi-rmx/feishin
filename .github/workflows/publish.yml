@@ -1,9 +1,44 @@
-name: Publish (Manual)
+name: Publish
 
-on: workflow_dispatch
+permissions:
+    contents: write
+
+on:
+    workflow_dispatch:
+    push:
+        branches:
+            - development
+        paths:
+            - package.json
 
 jobs:
+    version-changed:
+        runs-on: ubuntu-latest
+        outputs:
+            changed: ${{ steps.check.outputs.changed }}
+        steps:
+            - name: Checkout git repo
+              uses: actions/checkout@v6
+              with:
+                  fetch-depth: 0
+
+            - name: Compare package.json version with previous commit
+              id: check
+              env:
+                  BEFORE: ${{ github.event.before }}
+              run: |
+                  current=$(jq -r .version package.json)
+                  previous=$(git show "$BEFORE:package.json" 2>/dev/null | jq -r .version || echo "")
+                  echo "current: $current, previous: $previous"
+                  if [ -n "$current" ] && [ "$current" != "$previous" ]; then
+                    echo "changed=true" >> "$GITHUB_OUTPUT"
+                  else
+                    echo "changed=false" >> "$GITHUB_OUTPUT"
+                  fi
+
     publish:
+        needs: version-changed
+        if: github.event_name == 'workflow_dispatch' || needs.version-changed.outputs.changed == 'true'
         runs-on: ${{ matrix.os }}
 
         strategy:
